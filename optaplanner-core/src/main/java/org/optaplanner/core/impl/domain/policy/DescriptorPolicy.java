@@ -28,7 +28,9 @@ import org.optaplanner.core.impl.domain.common.accessor.MemberAccessor;
 
 public class DescriptorPolicy {
 
+    // solution.
     private Map<String, MemberAccessor> fromSolutionValueRangeProviderMap = new LinkedHashMap<>();
+    // entity.
     private Map<String, MemberAccessor> fromEntityValueRangeProviderMap = new LinkedHashMap<>();
 
     public void addFromSolutionValueRangeProvider(MemberAccessor memberAccessor) {

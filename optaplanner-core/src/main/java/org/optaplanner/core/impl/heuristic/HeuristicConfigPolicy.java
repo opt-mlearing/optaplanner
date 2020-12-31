@@ -34,6 +34,11 @@ import org.optaplanner.core.impl.score.director.InnerScoreDirectorFactory;
 import org.optaplanner.core.impl.solver.thread.ChildThreadType;
 import org.optaplanner.core.impl.solver.thread.DefaultSolverThreadFactory;
 
+/**
+ * 启发式搜索策略.
+ *
+ * @param <Solution_>
+ */
 public class HeuristicConfigPolicy<Solution_> {
 
     private final EnvironmentMode environmentMode;
@@ -52,14 +57,14 @@ public class HeuristicConfigPolicy<Solution_> {
     private Map<String, ValueMimicRecorder<Solution_>> valueMimicRecorderMap = new HashMap<>();
 
     public HeuristicConfigPolicy(EnvironmentMode environmentMode, Integer moveThreadCount, Integer moveThreadBufferSize,
-            Class<? extends ThreadFactory> threadFactoryClass,
-            InnerScoreDirectorFactory<Solution_, ?> scoreDirectorFactory) {
+                                 Class<? extends ThreadFactory> threadFactoryClass,
+                                 InnerScoreDirectorFactory<Solution_, ?> scoreDirectorFactory) {
         this(environmentMode, "", moveThreadCount, moveThreadBufferSize, threadFactoryClass, scoreDirectorFactory);
     }
 
     public HeuristicConfigPolicy(EnvironmentMode environmentMode, String logIndentation, Integer moveThreadCount,
-            Integer moveThreadBufferSize, Class<? extends ThreadFactory> threadFactoryClass,
-            InnerScoreDirectorFactory<Solution_, ?> scoreDirectorFactory) {
+                                 Integer moveThreadBufferSize, Class<? extends ThreadFactory> threadFactoryClass,
+                                 InnerScoreDirectorFactory<Solution_, ?> scoreDirectorFactory) {
         this.environmentMode = environmentMode;
         this.logIndentation = logIndentation;
         this.moveThreadCount = moveThreadCount;

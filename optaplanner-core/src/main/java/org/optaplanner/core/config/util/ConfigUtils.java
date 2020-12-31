@@ -59,13 +59,13 @@ public class ConfigUtils {
                     + clazz.getName() + ") does not have a public no-arg constructor"
                     // Inner classes include local, anonymous and non-static member classes
                     + ((clazz.isLocalClass() || clazz.isAnonymousClass() || clazz.isMemberClass())
-                            && !Modifier.isStatic(clazz.getModifiers()) ? " because it is an inner class." : "."),
+                               && !Modifier.isStatic(clazz.getModifiers()) ? " because it is an inner class." : "."),
                     e);
         }
     }
 
     public static void applyCustomProperties(Object bean, String beanClassPropertyName,
-            Map<String, String> customProperties, String customPropertiesPropertyName) {
+                                             Map<String, String> customProperties, String customPropertiesPropertyName) {
         if (customProperties == null) {
             return;
         }
@@ -212,11 +212,11 @@ public class ConfigUtils {
      * {@link #mergeProperty(Object, Object)}</li>
      * </ul>
      *
-     * @see #mergeProperty(Object, Object)
-     * @param a property {@code a}
-     * @param b property {@code b}
+     * @param a   property {@code a}
+     * @param b   property {@code b}
      * @param <T> the type of property {@code a} and {@code b}
      * @return sometimes null
+     * @see #mergeProperty(Object, Object)
      */
     public static <T> T meldProperty(T a, T b) {
         if (a == null && b == null) {
@@ -238,10 +238,10 @@ public class ConfigUtils {
      * Divides and ceils the result without using floating point arithmetic. For floor division,
      * see {@link Math#floorDiv(long, long)}.
      *
-     * @throws ArithmeticException if {@code divisor == 0}
      * @param dividend the dividend
-     * @param divisor the divisor
+     * @param divisor  the divisor
      * @return dividend / divisor, ceiled
+     * @throws ArithmeticException if {@code divisor == 0}
      */
     public static int ceilDivide(int dividend, int divisor) {
         if (divisor == 0) {
@@ -272,14 +272,17 @@ public class ConfigUtils {
     // ************************************************************************
 
     public static List<Class<?>> getAllAnnotatedLineageClasses(Class<?> bottomClass,
-            Class<? extends Annotation> annotation) {
+                                                               Class<? extends Annotation> annotation) {
         if (!bottomClass.isAnnotationPresent(annotation)) {
             return Collections.emptyList();
         }
         List<Class<?>> lineageClassList = new ArrayList<>();
         lineageClassList.add(bottomClass);
+        // super class 递归.
         Class<?> superclass = bottomClass.getSuperclass();
+        // 递归解析，这个过程会不会触发堆栈溢出? 原则上逻辑正确的前提下，是不会出现递归过深的问题[写出bug的就不知道啦.].
         lineageClassList.addAll(getAllAnnotatedLineageClasses(superclass, annotation));
+        // interface 递归.
         for (Class<?> superInterface : bottomClass.getInterfaces()) {
             lineageClassList.addAll(getAllAnnotatedLineageClasses(superInterface, annotation));
         }
@@ -303,7 +306,7 @@ public class ConfigUtils {
     }
 
     /**
-     * @param baseClass never null
+     * @param baseClass       never null
      * @param annotationClass never null
      * @return never null, sorted by type (fields before methods), then by {@link AlphabeticMemberComparator}.
      */
@@ -325,7 +328,7 @@ public class ConfigUtils {
 
     @SafeVarargs
     public static Class<? extends Annotation> extractAnnotationClass(Member member,
-            Class<? extends Annotation>... annotationClasses) {
+                                                                     Class<? extends Annotation>... annotationClasses) {
         Class<? extends Annotation> annotationClass = null;
         for (Class<? extends Annotation> detectedAnnotationClass : annotationClasses) {
             if (((AnnotatedElement) member).isAnnotationPresent(detectedAnnotationClass)) {

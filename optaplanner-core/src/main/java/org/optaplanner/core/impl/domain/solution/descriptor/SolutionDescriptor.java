@@ -103,17 +103,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * solution descriptor.
+ * 主要的属性有：
+ * (1) problem fact.
+ * (2) problem entity.
+ * (3)
+ *
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  */
 public class SolutionDescriptor<Solution_> {
 
     public static <Solution_> SolutionDescriptor<Solution_> buildSolutionDescriptor(Class<Solution_> solutionClass,
-            Class<?>... entityClasses) {
+                                                                                    Class<?>... entityClasses) {
         return buildSolutionDescriptor(solutionClass, Arrays.asList(entityClasses));
     }
 
     public static <Solution_> SolutionDescriptor<Solution_> buildSolutionDescriptor(Class<Solution_> solutionClass,
-            List<Class<?>> entityClassList) {
+                                                                                    List<Class<?>> entityClassList) {
         DescriptorPolicy descriptorPolicy = new DescriptorPolicy();
         SolutionDescriptor<Solution_> solutionDescriptor = new SolutionDescriptor<>(solutionClass);
         solutionDescriptor.processAnnotations(descriptorPolicy, entityClassList);
@@ -204,6 +210,7 @@ public class SolutionDescriptor<Solution_> {
     }
 
     public void processAnnotations(DescriptorPolicy descriptorPolicy, List<Class<?>> entityClassList) {
+        // 标记@PlanningSolution的对象解析.
         processSolutionAnnotations(descriptorPolicy);
         ArrayList<Method> potentiallyOverwritingMethodList = new ArrayList<>();
         // Iterate inherited members too (unlike for EntityDescriptor where each one is declared)
@@ -289,7 +296,7 @@ public class SolutionDescriptor<Solution_> {
     }
 
     private void processFactEntityOrScoreAnnotation(DescriptorPolicy descriptorPolicy, Member member,
-            List<Class<?>> entityClassList) {
+                                                    List<Class<?>> entityClassList) {
         Class<? extends Annotation> annotationClass = extractFactEntityOrScoreAnnotationClassOrAutoDiscover(
                 member, entityClassList);
         if (annotationClass == null) {
@@ -383,7 +390,7 @@ public class SolutionDescriptor<Solution_> {
     }
 
     private void processConstraintConfigurationProviderAnnotation(DescriptorPolicy descriptorPolicy, Member member,
-            Class<? extends Annotation> annotationClass) {
+                                                                  Class<? extends Annotation> annotationClass) {
         MemberAccessor memberAccessor = MemberAccessorFactory.buildMemberAccessor(
                 member, FIELD_OR_READ_METHOD, annotationClass);
         if (constraintConfigurationMemberAccessor != null) {
@@ -415,7 +422,7 @@ public class SolutionDescriptor<Solution_> {
     }
 
     private void processProblemFactPropertyAnnotation(DescriptorPolicy descriptorPolicy, Member member,
-            Class<? extends Annotation> annotationClass) {
+                                                      Class<? extends Annotation> annotationClass) {
         MemberAccessor memberAccessor = MemberAccessorFactory.buildMemberAccessor(
                 member, FIELD_OR_READ_METHOD, annotationClass);
         assertNoFieldAndGetterDuplicationOrConflict(memberAccessor, annotationClass);
@@ -436,7 +443,7 @@ public class SolutionDescriptor<Solution_> {
     }
 
     private void processPlanningEntityPropertyAnnotation(DescriptorPolicy descriptorPolicy, Member member,
-            Class<? extends Annotation> annotationClass) {
+                                                         Class<? extends Annotation> annotationClass) {
         MemberAccessor memberAccessor = MemberAccessorFactory.buildMemberAccessor(
                 member, FIELD_OR_GETTER_METHOD, annotationClass);
         assertNoFieldAndGetterDuplicationOrConflict(memberAccessor, annotationClass);
@@ -486,12 +493,12 @@ public class SolutionDescriptor<Solution_> {
                 + ") that is duplicated by a " + otherAnnotationClass.getSimpleName()
                 + " annotated member (" + duplicate + ").\n"
                 + (annotationClass.equals(otherAnnotationClass)
-                        ? "Maybe the annotation is defined on both the field and its getter."
-                        : "Maybe 2 mutually exclusive annotations are configured."));
+                           ? "Maybe the annotation is defined on both the field and its getter."
+                           : "Maybe 2 mutually exclusive annotations are configured."));
     }
 
     private void processScoreAnnotation(DescriptorPolicy descriptorPolicy, Member member,
-            Class<? extends Annotation> annotationClass) {
+                                        Class<? extends Annotation> annotationClass) {
         MemberAccessor memberAccessor = MemberAccessorFactory.buildMemberAccessor(
                 member, FIELD_OR_GETTER_METHOD_WITH_SETTER, PlanningScore.class);
         if (!Score.class.isAssignableFrom(memberAccessor.getType())) {
@@ -885,9 +892,9 @@ public class SolutionDescriptor<Solution_> {
                     + ") and constraintName (" + constraintName
                     + ") must not be null.\n"
                     + (constraintConfigurationDescriptor == null ? "Maybe check your constraint implementation."
-                            : "Maybe validate the data input of your constraintConfigurationClass ("
-                                    + constraintConfigurationDescriptor.getConstraintConfigurationClass()
-                                    + ") for that constraint (" + constraintName + ")."));
+                               : "Maybe validate the data input of your constraintConfigurationClass ("
+                    + constraintConfigurationDescriptor.getConstraintConfigurationClass()
+                    + ") for that constraint (" + constraintName + ")."));
         }
         if (!scoreDefinition.getScoreClass().isAssignableFrom(constraintWeight.getClass())) {
             throw new IllegalArgumentException("The constraintWeight (" + constraintWeight
@@ -895,9 +902,9 @@ public class SolutionDescriptor<Solution_> {
                     + ") for constraintPackage (" + constraintPackage + ") and constraintName (" + constraintName
                     + ") must be of the scoreClass (" + scoreDefinition.getScoreClass() + ").\n"
                     + (constraintConfigurationDescriptor == null ? "Maybe check your constraint implementation."
-                            : "Maybe validate the data input of your constraintConfigurationClass ("
-                                    + constraintConfigurationDescriptor.getConstraintConfigurationClass()
-                                    + ") for that constraint (" + constraintName + ")."));
+                               : "Maybe validate the data input of your constraintConfigurationClass ("
+                    + constraintConfigurationDescriptor.getConstraintConfigurationClass()
+                    + ") for that constraint (" + constraintName + ")."));
         }
         if (constraintWeight.getInitScore() != 0) {
             throw new IllegalArgumentException("The constraintWeight (" + constraintWeight
@@ -905,9 +912,9 @@ public class SolutionDescriptor<Solution_> {
                     + ") and constraintName (" + constraintName
                     + ") must have an initScore (" + constraintWeight.getInitScore() + ") equal to 0.\n"
                     + (constraintConfigurationDescriptor == null ? "Maybe check your constraint implementation."
-                            : "Maybe validate the data input of your constraintConfigurationClass ("
-                                    + constraintConfigurationDescriptor.getConstraintConfigurationClass()
-                                    + ") for that constraint (" + constraintName + ")."));
+                               : "Maybe validate the data input of your constraintConfigurationClass ("
+                    + constraintConfigurationDescriptor.getConstraintConfigurationClass()
+                    + ") for that constraint (" + constraintName + ")."));
         }
         if (!scoreDefinition.isPositiveOrZero(constraintWeight)) {
             throw new IllegalArgumentException("The constraintWeight (" + constraintWeight
@@ -915,9 +922,9 @@ public class SolutionDescriptor<Solution_> {
                     + ") and constraintName (" + constraintName
                     + ") must have a positive or zero constraintWeight (" + constraintWeight + ").\n"
                     + (constraintConfigurationDescriptor == null ? "Maybe check your constraint implementation."
-                            : "Maybe validate the data input of your constraintConfigurationClass ("
-                                    + constraintConfigurationDescriptor.getConstraintConfigurationClass()
-                                    + ") for that constraint (" + constraintName + ")."));
+                               : "Maybe validate the data input of your constraintConfigurationClass ("
+                    + constraintConfigurationDescriptor.getConstraintConfigurationClass()
+                    + ") for that constraint (" + constraintName + ")."));
         }
         if (constraintWeight instanceof AbstractBendableScore) {
             AbstractBendableScore bendableConstraintWeight = (AbstractBendableScore) constraintWeight;
@@ -933,9 +940,9 @@ public class SolutionDescriptor<Solution_> {
                         + bendableScoreDefinition.getHardLevelsSize()
                         + ") or softLevelsSize (" + bendableScoreDefinition.getSoftLevelsSize() + ").\n"
                         + (constraintConfigurationDescriptor == null ? "Maybe check your constraint implementation."
-                                : "Maybe validate the data input of your constraintConfigurationClass ("
-                                        + constraintConfigurationDescriptor.getConstraintConfigurationClass()
-                                        + ") for that constraint (" + constraintName + ")."));
+                                   : "Maybe validate the data input of your constraintConfigurationClass ("
+                        + constraintConfigurationDescriptor.getConstraintConfigurationClass()
+                        + ") for that constraint (" + constraintName + ")."));
             }
         }
     }
@@ -1106,7 +1113,7 @@ public class SolutionDescriptor<Solution_> {
     }
 
     private Collection<Object> extractMemberCollectionOrArray(MemberAccessor memberAccessor, Solution_ solution,
-            boolean isFact) {
+                                                              boolean isFact) {
         Collection<Object> collection;
         if (memberAccessor.getType().isArray()) {
             Object arrayObject = memberAccessor.executeGetter(solution);
@@ -1119,7 +1126,7 @@ public class SolutionDescriptor<Solution_> {
                     + ")'s " + (isFact ? "factCollectionProperty" : "entityCollectionProperty") + " ("
                     + memberAccessor + ") should never return null.\n"
                     + (memberAccessor instanceof ReflectionFieldMemberAccessor ? ""
-                            : "Maybe the getter/method always returns null instead of the actual data.\n")
+                               : "Maybe the getter/method always returns null instead of the actual data.\n")
                     + "Maybe that property (" + memberAccessor.getName()
                     + ") was set with null instead of an empty collection/array when the class ("
                     + solutionClass.getSimpleName() + ") instance was created.");
@@ -1139,8 +1146,8 @@ public class SolutionDescriptor<Solution_> {
      * Called when the {@link Score} has been calculated or predicted.
      *
      * @param solution never null
-     * @param score sometimes null, in rare occasions to indicate that the old {@link Score} is stale,
-     *        but no new ones has been calculated
+     * @param score    sometimes null, in rare occasions to indicate that the old {@link Score} is stale,
+     *                 but no new ones has been calculated
      */
     public void setScore(Solution_ solution, Score score) {
         scoreMemberAccessor.executeSetter(solution, score);

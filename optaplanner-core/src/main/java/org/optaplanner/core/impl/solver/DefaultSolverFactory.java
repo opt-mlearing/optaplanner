@@ -75,16 +75,20 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
 
     @Override
     public Solver<Solution_> buildSolver() {
+        // environment mode 设置.
         EnvironmentMode environmentMode_ = solverConfig.determineEnvironmentMode();
+        // 是否设置为守护进程.
         boolean daemon_ = defaultIfNull(solverConfig.getDaemon(), false);
-
+        // 随机管理器.
         RandomFactory randomFactory = buildRandomFactory(environmentMode_);
+        // 获取计算可用最大线程数.
         Integer moveThreadCount_ = new MoveThreadCountResolver().resolveMoveThreadCount(solverConfig.getMoveThreadCount());
+        // score factory
         InnerScoreDirectorFactory<Solution_, ?> scoreDirectorFactory = buildScoreDirectorFactory(environmentMode_);
         boolean constraintMatchEnabledPreference = environmentMode_.isAsserted();
         SolverScope<Solution_> solverScope = new SolverScope<>();
         solverScope.setScoreDirector(scoreDirectorFactory.buildScoreDirector(true, constraintMatchEnabledPreference));
-
+        // 历史最游解跟踪器.
         BestSolutionRecaller<Solution_> bestSolutionRecaller =
                 BestSolutionRecallerFactory.create().buildBestSolutionRecaller(environmentMode_);
         HeuristicConfigPolicy<Solution_> configPolicy = new HeuristicConfigPolicy<>(environmentMode_,
@@ -93,10 +97,14 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
         TerminationConfig terminationConfig_ = solverConfig.getTerminationConfig() == null
                 ? new TerminationConfig()
                 : solverConfig.getTerminationConfig();
+        // 流处理启停管理器.
         BasicPlumbingTermination<Solution_> basicPlumbingTermination = new BasicPlumbingTermination<>(daemon_);
-        Termination<Solution_> termination = TerminationFactory.<Solution_> create(terminationConfig_)
+        // 计算终止条件.
+        Termination<Solution_> termination = TerminationFactory.<Solution_>create(terminationConfig_)
                 .buildTermination(configPolicy, basicPlumbingTermination);
+        // 算法计算阶段划分.
         List<Phase<Solution_>> phaseList = buildPhaseList(configPolicy, bestSolutionRecaller, termination);
+        // 返回一个包含多阶段的复合的solver求解器.
         return new DefaultSolver<>(environmentMode_, randomFactory,
                 bestSolutionRecaller, basicPlumbingTermination, termination, phaseList, solverScope);
     }
@@ -144,11 +152,13 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
                                 + ") has a non-null randomType (" + solverConfig.getRandomType()
                                 + ") or a non-null randomSeed (" + solverConfig.getRandomSeed() + ").");
             }
+            // 根据 solverConfig 的配置，通过反射获取 randomFactory.
             randomFactory = ConfigUtils.newInstance(this, "randomFactoryClass", solverConfig.getRandomFactoryClass());
         } else {
             RandomType randomType_ = defaultIfNull(solverConfig.getRandomType(), RandomType.JDK);
             Long randomSeed_ = solverConfig.getRandomSeed();
             if (solverConfig.getRandomSeed() == null && environmentMode_ != EnvironmentMode.NON_REPRODUCIBLE) {
+                // 设置default 随机因子, 默认采用的是JDK自带的且随机因子为0 的随机管理器.
                 randomSeed_ = DEFAULT_RANDOM_SEED;
             }
             randomFactory = new DefaultRandomFactory(randomType_, randomSeed_);
@@ -157,11 +167,14 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
     }
 
     protected List<Phase<Solution_>> buildPhaseList(HeuristicConfigPolicy<Solution_> configPolicy,
-            BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> termination) {
+                                                    BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> termination) {
+        // 获取全部Phase配置的Config的列表.
         List<PhaseConfig> phaseConfigList_ = solverConfig.getPhaseConfigList();
         if (ConfigUtils.isEmptyCollection(phaseConfigList_)) {
+            // solver config中若无定义对应的phase阶段，则默认创建一个 construct Heuristic + local search 的phase.
             phaseConfigList_ = Arrays.asList(new ConstructionHeuristicPhaseConfig(), new LocalSearchPhaseConfig());
         }
+        // 获取实例化的具体phase对象.
         List<Phase<Solution_>> phaseList = new ArrayList<>(phaseConfigList_.size());
         int phaseIndex = 0;
         for (PhaseConfig phaseConfig : phaseConfigList_) {
@@ -174,6 +187,7 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
     }
 
     // Required for testability as final classes cannot be mocked.
+    // 实际返回的resolvedMoveThreadCount<= runtime.getRuntime().availableProcessors() -2;
     protected static class MoveThreadCountResolver {
 
         protected Integer resolveMoveThreadCount(String moveThreadCount) {
@@ -200,13 +214,14 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
             }
             if (resolvedMoveThreadCount > availableProcessorCount) {
                 logger.warn("The resolvedMoveThreadCount ({}) is higher "
-                        + "than the availableProcessorCount ({}), which is counter-efficient.",
+                                + "than the availableProcessorCount ({}), which is counter-efficient.",
                         resolvedMoveThreadCount, availableProcessorCount);
                 // Still allow it, to reproduce issues of a high-end server machine on a low-end developer machine
             }
             return resolvedMoveThreadCount;
         }
 
+        // 获取 Java VM 当前的可用线程数.
         protected int getAvailableProcessors() {
             return Runtime.getRuntime().availableProcessors();
         }

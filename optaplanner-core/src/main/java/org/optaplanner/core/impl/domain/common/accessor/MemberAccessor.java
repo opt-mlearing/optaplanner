@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
  * @see ReflectionBeanPropertyMemberAccessor
  * @see ReflectionFieldMemberAccessor
  * @see ReflectionMethodMemberAccessor
+ * 【Accessor: 存储器、访问器.】
  */
 public interface MemberAccessor extends AnnotatedElement {
 
