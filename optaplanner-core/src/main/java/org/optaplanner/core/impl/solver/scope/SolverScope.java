@@ -34,6 +34,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
+ * SolverScope怎么理解？有点Spark的DataFrame的意思，
+ *                   不同Phases阶段可以理解成计算节点，
+ *                   而SolverScope则提供Phases计算问题和运行参数的加载.
+ *                   而不同Phase的局部最优解则通过 org.optaplanner.core.impl.solver.scope.SolverScope#bestSolution属性保存.
  */
 public class SolverScope<Solution_> {
 
@@ -44,6 +48,7 @@ public class SolverScope<Solution_> {
     protected InnerScoreDirector<Solution_, ?> scoreDirector;
     /**
      * Used for capping CPU power usage in multithreaded scenarios.
+     * Semaphore是jdk1.5 java.util.concurrent并发包中提供的一个并发工具类.
      */
     protected Semaphore runnableThreadSemaphore = null;
 
@@ -52,8 +57,9 @@ public class SolverScope<Solution_> {
     protected long childThreadsScoreCalculationCount = 0;
 
     protected Score startingInitializedScore;
-
+    // recorded the bestSolution search by current finished-phase.
     protected volatile Solution_ bestSolution;
+    // 该属性同步对应 bestSolution.
     protected volatile Score bestScore;
     protected Long bestSolutionTimeMillis;
 
@@ -219,6 +225,12 @@ public class SolverScope<Solution_> {
         scoreDirector.setWorkingSolution(scoreDirector.cloneSolution(bestSolution));
     }
 
+    /**
+     * 创建多线程计算子线程使用的SolverScope.
+     *
+     * @param childThreadType
+     * @return
+     */
     public SolverScope<Solution_> createChildThreadSolverScope(ChildThreadType childThreadType) {
         SolverScope<Solution_> childThreadSolverScope = new SolverScope<>();
         childThreadSolverScope.startingSolverCount = startingSolverCount;
@@ -235,6 +247,7 @@ public class SolverScope<Solution_> {
         return childThreadSolverScope;
     }
 
+    // 并发使用
     public void initializeYielding() {
         if (runnableThreadSemaphore != null) {
             try {
@@ -268,6 +281,7 @@ public class SolverScope<Solution_> {
         }
     }
 
+    // 并发使用.
     public void destroyYielding() {
         if (runnableThreadSemaphore != null) {
             runnableThreadSemaphore.release();

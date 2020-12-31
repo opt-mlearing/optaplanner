@@ -29,8 +29,11 @@ public class SolverConfigIO implements JaxbIO<SolverConfig> {
     @Override
     public SolverConfig read(Reader reader) {
         Document document = genericJaxbIO.parseXml(reader);
+        // 读取 namespace.
         String rootElementNamespace = document.getDocumentElement().getNamespaceURI();
-        if (SolverConfig.XML_NAMESPACE.equals(rootElementNamespace)) { // If there is the correct namespace, validate.
+        // 进行xml头部文件namespace校验.
+        if (SolverConfig.XML_NAMESPACE.equals(rootElementNamespace)) {
+            // If there is the correct namespace, validate.
             return genericJaxbIO.readAndValidate(document, SOLVER_XSD_RESOURCE);
         } else if (rootElementNamespace == null || rootElementNamespace.isEmpty()) {
             // If not, add the missing namespace to maintain backward compatibility.

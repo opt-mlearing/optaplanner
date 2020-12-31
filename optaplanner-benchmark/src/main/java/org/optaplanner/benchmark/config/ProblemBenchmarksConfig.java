@@ -28,6 +28,7 @@ import org.optaplanner.core.config.AbstractConfig;
 import org.optaplanner.core.config.util.ConfigUtils;
 import org.optaplanner.persistence.common.api.domain.solution.SolutionFileIO;
 
+// 使用@XmlType指定输出顺序.
 @XmlType(propOrder = {
         "solutionFileIOClass",
         "writeOutputSolutionEnabled",

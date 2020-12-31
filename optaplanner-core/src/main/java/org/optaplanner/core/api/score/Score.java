@@ -49,6 +49,7 @@ public interface Score<Score_ extends Score<Score_>> extends Comparable<Score_> 
      *
      * @return higher is better, always negative (except in statistical calculations), 0 if all planning variables are
      *         initialized
+     * @return 得分越高越好，通常为负数. 若0则表示planning variables完成初始化.
      */
     int getInitScore();
 

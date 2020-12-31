@@ -85,7 +85,7 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
      * Reads an XML solver configuration from the classpath.
      *
      * @param solverConfigResource never null, a classpath resource
-     *        as defined by {@link ClassLoader#getResource(String)}
+     *                             as defined by {@link ClassLoader#getResource(String)}
      * @return never null
      */
     public static SolverConfig createFromXmlResource(String solverConfigResource) {
@@ -96,9 +96,9 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
      * As defined by {@link #createFromXmlResource(String)}.
      *
      * @param solverConfigResource never null, a classpath resource
-     *        as defined by {@link ClassLoader#getResource(String)}
-     * @param classLoader sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
-     *        null to use the default {@link ClassLoader}
+     *                             as defined by {@link ClassLoader#getResource(String)}
+     * @param classLoader          sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
+     *                             null to use the default {@link ClassLoader}
      * @return never null
      */
     public static SolverConfig createFromXmlResource(String solverConfigResource, ClassLoader classLoader) {
@@ -140,8 +140,8 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
      * As defined by {@link #createFromXmlFile(File)}.
      *
      * @param solverConfigFile never null
-     * @param classLoader sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
-     *        null to use the default {@link ClassLoader}
+     * @param classLoader      sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
+     *                         null to use the default {@link ClassLoader}
      * @return never null
      */
     public static SolverConfig createFromXmlFile(File solverConfigFile, ClassLoader classLoader) {
@@ -167,9 +167,9 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
     /**
      * As defined by {@link #createFromXmlInputStream(InputStream)}.
      *
-     * @param in never null, gets closed
+     * @param in          never null, gets closed
      * @param classLoader sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
-     *        null to use the default {@link ClassLoader}
+     *                    null to use the default {@link ClassLoader}
      * @return never null
      */
     public static SolverConfig createFromXmlInputStream(InputStream in, ClassLoader classLoader) {
@@ -193,9 +193,9 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
     /**
      * As defined by {@link #createFromXmlReader(Reader)}.
      *
-     * @param reader never null, gets closed
+     * @param reader      never null, gets closed
      * @param classLoader sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
-     *        null to use the default {@link ClassLoader}
+     *                    null to use the default {@link ClassLoader}
      * @return never null
      */
     public static SolverConfig createFromXmlReader(Reader reader, ClassLoader classLoader) {
@@ -226,6 +226,7 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
     // and also because the input config file should match the output config file
 
     protected EnvironmentMode environmentMode = null;
+    // 标志是否作为守护进程使用,若否，则交由算法的termination对象使用，若是，则线程挂起;
     protected Boolean daemon = null;
     protected RandomType randomType = null;
     protected Long randomSeed = null;
@@ -503,6 +504,7 @@ public class SolverConfig extends AbstractConfig<SolverConfig> {
      */
     @Override
     public SolverConfig inherit(SolverConfig inheritedConfig) {
+        // @return solverConfig 继承 @param inheritedConfig 对象设置，若无则采用默认设置.
         classLoader = ConfigUtils.inheritOverwritableProperty(classLoader, inheritedConfig.getClassLoader());
         environmentMode = ConfigUtils.inheritOverwritableProperty(environmentMode, inheritedConfig.getEnvironmentMode());
         daemon = ConfigUtils.inheritOverwritableProperty(daemon, inheritedConfig.getDaemon());

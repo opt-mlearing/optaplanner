@@ -36,11 +36,21 @@ public abstract class AbstractScore<Score_ extends AbstractScore<Score_>> implem
 
     protected static final String INIT_LABEL = "init";
 
+    /**
+     * 注意从scoreString的解析使用的分隔符是"/".
+     *
+     * @param scoreClass
+     * @param scoreString
+     * @param levelSuffixes
+     * @return
+     */
     protected static String[] parseScoreTokens(Class<? extends AbstractScore<?>> scoreClass,
             String scoreString, String... levelSuffixes) {
         String[] scoreTokens = new String[levelSuffixes.length + 1];
         String[] suffixedScoreTokens = scoreString.split("/");
         int startIndex;
+        // 注意，这里为什么是 (levelSuffixes.length + 1).
+        // initScore + INIT_LABEL + "/". 分数前，INIT_LAVEL="init" 字符在后.
         if (suffixedScoreTokens.length == levelSuffixes.length + 1) {
             String suffixedScoreToken = suffixedScoreTokens[0];
             if (!suffixedScoreToken.endsWith(INIT_LABEL)) {

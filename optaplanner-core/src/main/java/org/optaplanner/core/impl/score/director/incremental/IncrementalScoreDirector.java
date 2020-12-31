@@ -36,6 +36,7 @@ import org.optaplanner.core.impl.score.constraint.DefaultIndictment;
 import org.optaplanner.core.impl.score.director.AbstractScoreDirector;
 
 /**
+ * 增量计算Solution变化的部分带来Score的增量差异.
  * Incremental java implementation of {@link ScoreDirector}, which only recalculates the {@link Score}
  * of the part of the {@link PlanningSolution working solution} that changed,
  * instead of the going through the entire {@link PlanningSolution}. This is incremental calculation, which is fast.
