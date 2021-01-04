@@ -275,6 +275,13 @@ public class SolutionDescriptor<Solution_> {
         lookUpStrategyResolver = new LookUpStrategyResolver(solutionAnnotation.lookUpStrategyType());
     }
 
+    /**
+     * 一般情况下, solution cloner 采用{@link FieldAccessingSolutionCloner} 实现，
+     * 若需要个性化配置，需要赋值 {@link PlanningSolution#solutionCloner()}属性，配置对应调用类.
+     *
+     * @param descriptorPolicy
+     * @param solutionAnnotation
+     */
     private void processSolutionCloner(DescriptorPolicy descriptorPolicy, PlanningSolution solutionAnnotation) {
         Class<? extends SolutionCloner> solutionClonerClass = solutionAnnotation.solutionCloner();
         if (solutionClonerClass == PlanningSolution.NullSolutionCloner.class) {
@@ -283,6 +290,7 @@ public class SolutionDescriptor<Solution_> {
         if (solutionClonerClass != null) {
             solutionCloner = ConfigUtils.newInstance(this, "solutionClonerClass", solutionClonerClass);
         } else {
+            // 默认实现.
             solutionCloner = new FieldAccessingSolutionCloner<>(this);
         }
     }

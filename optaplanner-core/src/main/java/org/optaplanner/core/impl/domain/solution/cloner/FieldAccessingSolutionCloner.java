@@ -54,6 +54,9 @@ import org.optaplanner.core.impl.domain.common.accessor.MemberAccessor;
 import org.optaplanner.core.impl.domain.solution.descriptor.SolutionDescriptor;
 
 /**
+ * general implement for solution cloner.
+ * if you want to a customer setting for the a special planning solution, must implement {@link SolutionCloner} interface.
+ *
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  */
 public class FieldAccessingSolutionCloner<Solution_> implements SolutionCloner<Solution_> {
@@ -82,7 +85,7 @@ public class FieldAccessingSolutionCloner<Solution_> implements SolutionCloner<S
      * This method is thread-safe.
      *
      * @param clazz never null
-     * @param <C> type
+     * @param <C>   type
      * @return never null
      */
     @SuppressWarnings("unchecked")
@@ -104,7 +107,7 @@ public class FieldAccessingSolutionCloner<Solution_> implements SolutionCloner<S
      * This method is thread-safe.
      *
      * @param clazz never null
-     * @param <C> type
+     * @param <C>   type
      * @return never null
      */
     protected <C> List<Field> retrieveCachedFields(Class<C> clazz) {
@@ -124,9 +127,9 @@ public class FieldAccessingSolutionCloner<Solution_> implements SolutionCloner<S
     /**
      * This method is thread-safe.
      *
-     * @param field never null
+     * @param field              never null
      * @param fieldInstanceClass never null
-     * @param actualValueClass never null
+     * @param actualValueClass   never null
      * @return never null
      */
     protected boolean retrieveDeepCloneDecision(Field field, Class<?> fieldInstanceClass, Class<?> actualValueClass) {
@@ -425,7 +428,7 @@ public class FieldAccessingSolutionCloner<Solution_> implements SolutionCloner<S
          * Fails fast if {@link #isFieldAnEntityPropertyOnSolution} assumptions were wrong.
          *
          * @param originalSolution never null
-         * @param cloneSolution never null
+         * @param cloneSolution    never null
          */
         protected void validateCloneSolution(Solution_ originalSolution, Solution_ cloneSolution) {
             for (MemberAccessor memberAccessor : solutionDescriptor.getEntityMemberAccessorMap().values()) {
