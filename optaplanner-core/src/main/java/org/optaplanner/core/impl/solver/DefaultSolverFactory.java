@@ -75,25 +75,28 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
 
     @Override
     public Solver<Solution_> buildSolver() {
-        // environment mode 设置.
+        // environment mode 设置, 若solverConfig的EnvironmentMode自定义为null,则设置成默认的REPRODUCIBLE模式.
         EnvironmentMode environmentMode_ = solverConfig.determineEnvironmentMode();
-        // 是否设置为守护进程.
+        // 是否设置为守护进程, 默认不设置.
         boolean daemon_ = defaultIfNull(solverConfig.getDaemon(), false);
         // 随机管理器.
         RandomFactory randomFactory = buildRandomFactory(environmentMode_);
         // 获取计算可用最大线程数.
         Integer moveThreadCount_ = new MoveThreadCountResolver().resolveMoveThreadCount(solverConfig.getMoveThreadCount());
-        // score factory
+        // score factory relevant setting.
+        // 获取 scoreDirectorFactory.
         InnerScoreDirectorFactory<Solution_, ?> scoreDirectorFactory = buildScoreDirectorFactory(environmentMode_);
         boolean constraintMatchEnabledPreference = environmentMode_.isAsserted();
         SolverScope<Solution_> solverScope = new SolverScope<>();
+        // setting score director.
         solverScope.setScoreDirector(scoreDirectorFactory.buildScoreDirector(true, constraintMatchEnabledPreference));
-        // 历史最游解跟踪器.
+        // 历史最优解跟踪器.
         BestSolutionRecaller<Solution_> bestSolutionRecaller =
                 BestSolutionRecallerFactory.create().buildBestSolutionRecaller(environmentMode_);
         HeuristicConfigPolicy<Solution_> configPolicy = new HeuristicConfigPolicy<>(environmentMode_,
                 moveThreadCount_, solverConfig.getMoveThreadBufferSize(), solverConfig.getThreadFactoryClass(),
                 scoreDirectorFactory);
+        // 迭代终止参数对象.
         TerminationConfig terminationConfig_ = solverConfig.getTerminationConfig() == null
                 ? new TerminationConfig()
                 : solverConfig.getTerminationConfig();
@@ -114,17 +117,22 @@ public final class DefaultSolverFactory<Solution_> implements SolverFactory<Solu
      * @return never null
      */
     public InnerScoreDirectorFactory<Solution_, ?> buildScoreDirectorFactory(EnvironmentMode environmentMode) {
+        // 首先描述solution的描述.
         SolutionDescriptor<Solution_> solutionDescriptor = buildSolutionDescriptor();
         ScoreDirectorFactoryConfig scoreDirectorFactoryConfig_ = solverConfig.getScoreDirectorFactoryConfig() == null
                 ? new ScoreDirectorFactoryConfig()
                 : solverConfig.getScoreDirectorFactoryConfig();
         ScoreDirectorFactoryFactory<Solution_, ?> scoreDirectorFactoryFactory =
                 new ScoreDirectorFactoryFactory<>(scoreDirectorFactoryConfig_);
+        //  构建score director factory.
         return scoreDirectorFactoryFactory.buildScoreDirectorFactory(solverConfig.getClassLoader(), environmentMode,
                 solutionDescriptor);
     }
 
     /**
+     * build solution descriptor.
+     * must need solution && entity class.
+     *
      * @return never null
      */
     public SolutionDescriptor<Solution_> buildSolutionDescriptor() {

@@ -79,6 +79,7 @@ public final class ReflectionHelper {
     }
 
     /**
+     * 通过比较 Member#getName()的前缀判断.
      * Checks whether the given method is a valid getter method according to the JavaBeans standard.
      *
      * @param method never null
@@ -99,7 +100,7 @@ public final class ReflectionHelper {
 
     /**
      * @param containingClass never null
-     * @param propertyName never null
+     * @param propertyName    never null
      * @return true if that getter exists
      */
     public static boolean hasGetterMethod(Class<?> containingClass, String propertyName) {
@@ -108,7 +109,7 @@ public final class ReflectionHelper {
 
     /**
      * @param containingClass never null
-     * @param propertyName never null
+     * @param propertyName    never null
      * @return sometimes null
      */
     public static Method getGetterMethod(Class<?> containingClass, String propertyName) {
@@ -134,7 +135,7 @@ public final class ReflectionHelper {
 
     /**
      * @param containingClass never null
-     * @param fieldName never null
+     * @param fieldName       never null
      * @return true if that field exists
      */
     public static boolean hasField(Class<?> containingClass, String fieldName) {
@@ -143,7 +144,7 @@ public final class ReflectionHelper {
 
     /**
      * @param containingClass never null
-     * @param fieldName never null
+     * @param fieldName       never null
      * @return sometimes null
      */
     public static Field getField(Class<?> containingClass, String fieldName) {
@@ -156,8 +157,8 @@ public final class ReflectionHelper {
 
     /**
      * @param containingClass never null
-     * @param propertyType never null
-     * @param propertyName never null
+     * @param propertyType    never null
+     * @param propertyName    never null
      * @return null if it doesn't exist
      */
     public static Method getSetterMethod(Class<?> containingClass, Class<?> propertyType, String propertyName) {
@@ -172,7 +173,7 @@ public final class ReflectionHelper {
 
     /**
      * @param containingClass never null
-     * @param propertyName never null
+     * @param propertyName    never null
      * @return null if it doesn't exist
      */
     public static Method getSetterMethod(Class<?> containingClass, String propertyName) {

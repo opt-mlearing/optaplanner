@@ -66,6 +66,7 @@ public final class HardSoftScore extends AbstractScore<HardSoftScore> {
     // Fields
     // ************************************************************************
 
+    // fields由 final 修饰.
     private final int hardScore;
     private final int softScore;
 
@@ -172,7 +173,7 @@ public final class HardSoftScore extends AbstractScore<HardSoftScore> {
 
     @Override
     public Number[] toLevelNumbers() {
-        return new Number[] { hardScore, softScore };
+        return new Number[]{hardScore, softScore};
     }
 
     @Override

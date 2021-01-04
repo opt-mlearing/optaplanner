@@ -56,6 +56,7 @@ public final class DefaultIndictment<Score_ extends Score<Score_>> implements In
     // ************************************************************************
 
     public void addConstraintMatch(ConstraintMatch<Score_> constraintMatch) {
+        // 不同类类型的score累加需要分别实现.
         score = score.add(constraintMatch.getScore());
         boolean added = constraintMatchSet.add(constraintMatch);
         if (!added) {

@@ -47,9 +47,9 @@ public interface SolverFactory<Solution_> {
      * The XML root element must be {@code <solver>}.
      *
      * @param solverConfigResource never null, a classpath resource
-     *        as defined by {@link ClassLoader#getResource(String)}
+     *                             as defined by {@link ClassLoader#getResource(String)}
+     * @param <Solution_>          the solution type, the class with the {@link PlanningSolution} annotation
      * @return never null
-     * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
     static <Solution_> SolverFactory<Solution_> createFromXmlResource(String solverConfigResource) {
         SolverConfig solverConfig = SolverConfig.createFromXmlResource(solverConfigResource);
@@ -60,14 +60,14 @@ public interface SolverFactory<Solution_> {
      * As defined by {@link #createFromXmlResource(String)}.
      *
      * @param solverConfigResource never null, a classpath resource
-     *        as defined by {@link ClassLoader#getResource(String)}
-     * @param classLoader sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
-     *        null to use the default {@link ClassLoader}
+     *                             as defined by {@link ClassLoader#getResource(String)}
+     * @param classLoader          sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
+     *                             null to use the default {@link ClassLoader}
+     * @param <Solution_>          the solution type, the class with the {@link PlanningSolution} annotation
      * @return never null
-     * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
     static <Solution_> SolverFactory<Solution_> createFromXmlResource(String solverConfigResource,
-            ClassLoader classLoader) {
+                                                                      ClassLoader classLoader) {
         SolverConfig solverConfig = SolverConfig.createFromXmlResource(solverConfigResource, classLoader);
         return new DefaultSolverFactory<>(solverConfig);
     }
@@ -80,8 +80,8 @@ public interface SolverFactory<Solution_> {
      * it's recommend to use {@link #createFromXmlResource(String)} instead.
      *
      * @param solverConfigFile never null
+     * @param <Solution_>      the solution type, the class with the {@link PlanningSolution} annotation
      * @return never null
-     * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
     static <Solution_> SolverFactory<Solution_> createFromXmlFile(File solverConfigFile) {
         SolverConfig solverConfig = SolverConfig.createFromXmlFile(solverConfigFile);
@@ -92,10 +92,10 @@ public interface SolverFactory<Solution_> {
      * As defined by {@link #createFromXmlFile(File)}.
      *
      * @param solverConfigFile never null
-     * @param classLoader sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
-     *        null to use the default {@link ClassLoader}
+     * @param classLoader      sometimes null, the {@link ClassLoader} to use for loading all resources and {@link Class}es,
+     *                         null to use the default {@link ClassLoader}
+     * @param <Solution_>      the solution type, the class with the {@link PlanningSolution} annotation
      * @return never null
-     * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
     static <Solution_> SolverFactory<Solution_> createFromXmlFile(File solverConfigFile, ClassLoader classLoader) {
         SolverConfig solverConfig = SolverConfig.createFromXmlFile(solverConfigFile, classLoader);
@@ -112,10 +112,11 @@ public interface SolverFactory<Solution_> {
      * use {@link #createFromXmlResource(String)} instead.
      *
      * @param solverConfig never null
+     * @param <Solution_>  the solution type, the class with the {@link PlanningSolution} annotation
      * @return never null
-     * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
      */
     static <Solution_> SolverFactory<Solution_> create(SolverConfig solverConfig) {
+        // 此处只校验SolverConfig,可能solverConfig的内部属性赋值还是为null.
         Objects.requireNonNull(solverConfig);
         // Defensive copy of solverConfig, because the DefaultSolverFactory doesn't internalize it yet
         solverConfig = new SolverConfig(solverConfig);

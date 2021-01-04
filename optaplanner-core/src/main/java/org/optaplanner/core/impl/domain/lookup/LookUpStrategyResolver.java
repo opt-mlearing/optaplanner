@@ -44,6 +44,7 @@ import org.optaplanner.core.impl.domain.common.accessor.MemberAccessor;
 
 /**
  * This class is thread-safe.
+ * adjust use which type strategy resolver.
  */
 public class LookUpStrategyResolver {
 
@@ -53,6 +54,7 @@ public class LookUpStrategyResolver {
 
     public LookUpStrategyResolver(LookUpStrategyType lookUpStrategyType) {
         this.lookUpStrategyType = lookUpStrategyType;
+        // 与数值化相关的lookUp strategy 全部使用 ImmutableUpStrategy.
         decisionCache.put(Boolean.class, new ImmutableLookUpStrategy());
         decisionCache.put(Byte.class, new ImmutableLookUpStrategy());
         decisionCache.put(Short.class, new ImmutableLookUpStrategy());
@@ -95,6 +97,7 @@ public class LookUpStrategyResolver {
             }
             switch (lookUpStrategyType) {
                 case PLANNING_ID_OR_NONE:
+                    // default used lookUp strategy.
                     MemberAccessor memberAccessor1 = ConfigUtils.findPlanningIdMemberAccessor(objectClass);
                     if (memberAccessor1 == null) {
                         return new NoneLookUpStrategy();
@@ -112,6 +115,7 @@ public class LookUpStrategyResolver {
                     }
                     return new PlanningIdLookUpStrategy(memberAccessor2);
                 case EQUALITY:
+                    // 前提需要重写equal() && hashCode() 方法.
                     Method equalsMethod;
                     Method hashCodeMethod;
                     try {

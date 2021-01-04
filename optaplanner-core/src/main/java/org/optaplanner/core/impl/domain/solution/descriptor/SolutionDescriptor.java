@@ -80,6 +80,7 @@ import org.optaplanner.core.impl.domain.common.accessor.ReflectionFieldMemberAcc
 import org.optaplanner.core.impl.domain.constraintweight.descriptor.ConstraintConfigurationDescriptor;
 import org.optaplanner.core.impl.domain.entity.descriptor.EntityDescriptor;
 import org.optaplanner.core.impl.domain.lookup.LookUpStrategyResolver;
+import org.optaplanner.core.impl.domain.lookup.PlanningIdLookUpStrategy;
 import org.optaplanner.core.impl.domain.policy.DescriptorPolicy;
 import org.optaplanner.core.impl.domain.solution.cloner.FieldAccessingSolutionCloner;
 import org.optaplanner.core.impl.domain.variable.descriptor.GenuineVariableDescriptor;
@@ -104,10 +105,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * solution descriptor.
- * 主要的属性有：
- * (1) problem fact.
- * (2) problem entity.
- * (3)
+ * 记录solution的主要构建的描述.
  *
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  */
@@ -120,6 +118,7 @@ public class SolutionDescriptor<Solution_> {
 
     public static <Solution_> SolutionDescriptor<Solution_> buildSolutionDescriptor(Class<Solution_> solutionClass,
                                                                                     List<Class<?>> entityClassList) {
+        // 初始化
         DescriptorPolicy descriptorPolicy = new DescriptorPolicy();
         SolutionDescriptor<Solution_> solutionDescriptor = new SolutionDescriptor<>(solutionClass);
         solutionDescriptor.processAnnotations(descriptorPolicy, entityClassList);
@@ -209,6 +208,12 @@ public class SolutionDescriptor<Solution_> {
         lowestEntityDescriptorMemoization.put(entityClass, entityDescriptor);
     }
 
+    /**
+     * 解析annotation.
+     *
+     * @param descriptorPolicy
+     * @param entityClassList
+     */
     public void processAnnotations(DescriptorPolicy descriptorPolicy, List<Class<?>> entityClassList) {
         // 标记@PlanningSolution的对象解析.
         processSolutionAnnotations(descriptorPolicy);
@@ -224,6 +229,9 @@ public class SolutionDescriptor<Solution_> {
                     // Ignore member because it is an overwritten method
                     continue;
                 }
+                /**
+                 * {@link DescriptorPolicy#fromEntityValueRangeProviderMap} parse @ValueRangeProvider annotation.
+                 */
                 processValueRangeProviderAnnotation(descriptorPolicy, member);
                 processFactEntityOrScoreAnnotation(descriptorPolicy, member, entityClassList);
             }
@@ -271,13 +279,19 @@ public class SolutionDescriptor<Solution_> {
                     " but does not have a " + PlanningSolution.class.getSimpleName() + " annotation.");
         }
         autoDiscoverMemberType = solutionAnnotation.autoDiscoverMemberType();
+        // 实例化的solution cloner的对象，具体实例化对象可配置.
         processSolutionCloner(descriptorPolicy, solutionAnnotation);
+        /**
+         * {@link lookUpStrategyResolverd } default setting by {@link PlanningSolution#lookUpStrategyType()}="PLANNING_ID_OR_NONE"
+         * default implement by this type && the instance come form {@link PlanningIdLookUpStrategy}
+         */
         lookUpStrategyResolver = new LookUpStrategyResolver(solutionAnnotation.lookUpStrategyType());
     }
 
     /**
      * 一般情况下, solution cloner 采用{@link FieldAccessingSolutionCloner} 实现，
      * 若需要个性化配置，需要赋值 {@link PlanningSolution#solutionCloner()}属性，配置对应调用类.
+     * {@link #processSolutionCloner(DescriptorPolicy, PlanningSolution)} 主要用于实例化 solutionCloner对象.
      *
      * @param descriptorPolicy
      * @param solutionAnnotation
