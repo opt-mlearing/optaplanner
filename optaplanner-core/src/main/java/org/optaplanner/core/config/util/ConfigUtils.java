@@ -270,7 +270,7 @@ public class ConfigUtils {
     // ************************************************************************
     // Member and annotation methods
     // ************************************************************************
-
+    // 找到
     public static List<Class<?>> getAllAnnotatedLineageClasses(Class<?> bottomClass,
                                                                Class<? extends Annotation> annotation) {
         if (!bottomClass.isAnnotationPresent(annotation)) {
@@ -394,7 +394,9 @@ public class ConfigUtils {
     }
 
     public static <C> MemberAccessor findPlanningIdMemberAccessor(Class<C> clazz) {
+        // 获取被PlanningId annotation标注的字段.
         List<Member> memberList = getAllMembers(clazz, PlanningId.class);
+        // @PlanningId 有且只能有一个.
         if (memberList.isEmpty()) {
             return null;
         }

@@ -33,6 +33,11 @@ public class LookUpManager {
 
     private Map<Object, Object> idToWorkingObjectMap;
 
+    /**
+     * must have the {@link LookUpStrategyResolver} concrete instance to construct LookUpManager instance.
+     *
+     * @param lookUpStrategyResolver
+     */
     public LookUpManager(LookUpStrategyResolver lookUpStrategyResolver) {
         this.lookUpStrategyResolver = lookUpStrategyResolver;
     }
@@ -62,11 +67,11 @@ public class LookUpManager {
      * As defined by {@link ScoreDirector#lookUpWorkingObject(Object)}.
      *
      * @param externalObject sometimes null
+     * @param <E>            the object type
      * @return null if externalObject is null
      * @throws IllegalArgumentException if there is no workingObject for externalObject, if it cannot be looked up
-     *         or if the externalObject's class is not supported
-     * @throws IllegalStateException if it cannot be looked up
-     * @param <E> the object type
+     *                                  or if the externalObject's class is not supported
+     * @throws IllegalStateException    if it cannot be looked up
      */
     public <E> E lookUpWorkingObject(E externalObject) {
         if (externalObject == null) {
@@ -80,10 +85,10 @@ public class LookUpManager {
      * As defined by {@link ScoreDirector#lookUpWorkingObjectOrReturnNull(Object)}.
      *
      * @param externalObject sometimes null
+     * @param <E>            the object type
      * @return null if externalObject is null or if there is no workingObject for externalObject
      * @throws IllegalArgumentException if it cannot be looked up or if the externalObject's class is not supported
-     * @throws IllegalStateException if it cannot be looked up
-     * @param <E> the object type
+     * @throws IllegalStateException    if it cannot be looked up
      */
     public <E> E lookUpWorkingObjectOrReturnNull(E externalObject) {
         if (externalObject == null) {

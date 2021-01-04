@@ -62,7 +62,8 @@ public class ScoreDirectorFactoryFactory<Solution_, Score_ extends Score<Score_>
     }
 
     public InnerScoreDirectorFactory<Solution_, Score_> buildScoreDirectorFactory(ClassLoader classLoader,
-            EnvironmentMode environmentMode, SolutionDescriptor<Solution_> solutionDescriptor) {
+                                                                                  EnvironmentMode environmentMode, SolutionDescriptor<Solution_> solutionDescriptor) {
+        // 根据solutionDescriptor中的对应信息构造出 scoreDirectorFactory.
         AbstractScoreDirectorFactory<Solution_, Score_> scoreDirectorFactory =
                 decideMultipleScoreDirectorFactories(classLoader, solutionDescriptor);
         if (config.getAssertionScoreDirectorFactory() != null) {
@@ -91,6 +92,13 @@ public class ScoreDirectorFactoryFactory<Solution_, Score_ extends Score<Score_>
         return scoreDirectorFactory;
     }
 
+    /**
+     * 根据solutionDescriptor中的信息，构建ScoreDirectorFactory.
+     *
+     * @param classLoader
+     * @param solutionDescriptor
+     * @return
+     */
     protected AbstractScoreDirectorFactory<Solution_, Score_> decideMultipleScoreDirectorFactories(
             ClassLoader classLoader, SolutionDescriptor<Solution_> solutionDescriptor) {
         EasyScoreDirectorFactory<Solution_, Score_> easyScoreDirectorFactory =
@@ -123,9 +131,9 @@ public class ScoreDirectorFactoryFactory<Solution_, Score_ extends Score<Score_>
     }
 
     private void checkMultipleScoreDirectorFactoryTypes(EasyScoreDirectorFactory easyScoreDirectorFactory,
-            ConstraintStreamScoreDirectorFactory constraintStreamScoreDirectorFactory,
-            IncrementalScoreDirectorFactory incrementalScoreDirectorFactory,
-            DroolsScoreDirectorFactory droolsScoreDirectorFactory) {
+                                                        ConstraintStreamScoreDirectorFactory constraintStreamScoreDirectorFactory,
+                                                        IncrementalScoreDirectorFactory incrementalScoreDirectorFactory,
+                                                        DroolsScoreDirectorFactory droolsScoreDirectorFactory) {
         if (Stream.of(easyScoreDirectorFactory, constraintStreamScoreDirectorFactory,
                 incrementalScoreDirectorFactory, droolsScoreDirectorFactory)
                 .filter(Objects::nonNull).count() > 1) {
@@ -146,9 +154,9 @@ public class ScoreDirectorFactoryFactory<Solution_, Score_ extends Score<Score_>
                 String abbreviatedScoreDrlList = ConfigUtils.abbreviate(config.getScoreDrlList());
                 String abbreviatedScoreDrlFileList = config.getScoreDrlFileList() == null ? ""
                         : ConfigUtils.abbreviate(config.getScoreDrlFileList()
-                                .stream()
-                                .map(File::getName)
-                                .collect(Collectors.toList()));
+                        .stream()
+                        .map(File::getName)
+                        .collect(Collectors.toList()));
                 scoreDirectorFactoryPropertyList
                         .add("a scoreDrlList (" + abbreviatedScoreDrlList + ") or a scoreDrlFileList ("
                                 + abbreviatedScoreDrlFileList + ")");
@@ -230,7 +238,7 @@ public class ScoreDirectorFactoryFactory<Solution_, Score_ extends Score<Score_>
     }
 
     protected DroolsScoreDirectorFactory<Solution_, Score_> buildDroolsScoreDirectorFactory(ClassLoader classLoader,
-            SolutionDescriptor<Solution_> solutionDescriptor) {
+                                                                                            SolutionDescriptor<Solution_> solutionDescriptor) {
         boolean generateDroolsTestOnError =
                 Boolean.parseBoolean(System.getProperty(GENERATE_DROOLS_TEST_ON_ERROR_PROPERTY_NAME, "false"));
 

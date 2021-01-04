@@ -20,6 +20,10 @@ import java.util.Map;
 
 import org.optaplanner.core.api.domain.solution.ProblemFactCollectionProperty;
 
+/**
+ * the lookup objects must override equal() && hashCode() method .
+ * 一般并不使用，那么重写equal() && hashCode() 可忽略.
+ */
 public class EqualsLookUpStrategy implements LookUpStrategy {
 
     @Override

@@ -18,6 +18,9 @@ package org.optaplanner.core.impl.domain.lookup;
 
 import java.util.Map;
 
+/**
+ * immutable lookup strategy, general used by numbers.
+ */
 public class ImmutableLookUpStrategy implements LookUpStrategy {
 
     @Override

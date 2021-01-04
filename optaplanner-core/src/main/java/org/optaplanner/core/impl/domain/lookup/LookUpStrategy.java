@@ -18,6 +18,9 @@ package org.optaplanner.core.impl.domain.lookup;
 
 import java.util.Map;
 
+/**
+ * define the base methods for LookUpStrategy.
+ */
 public interface LookUpStrategy {
 
     void addWorkingObject(Map<Object, Object> idToWorkingObjectMap, Object workingObject);

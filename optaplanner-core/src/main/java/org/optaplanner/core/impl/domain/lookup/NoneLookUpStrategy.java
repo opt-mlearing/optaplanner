@@ -22,6 +22,9 @@ import org.optaplanner.core.api.domain.lookup.LookUpStrategyType;
 import org.optaplanner.core.api.domain.lookup.PlanningId;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
+/**
+ * null case.
+ */
 public class NoneLookUpStrategy implements LookUpStrategy {
 
     @Override

@@ -66,6 +66,7 @@ public @interface PlanningSolution {
     AutoDiscoverMemberType autoDiscoverMemberType() default AutoDiscoverMemberType.NONE;
 
     /**
+     * 重写的solution clone 方法.
      * Overrides the default {@link SolutionCloner} to implement a custom {@link PlanningSolution} cloning implementation.
      * <p>
      * If this is not specified, then the default reflection-based {@link SolutionCloner} is used,
