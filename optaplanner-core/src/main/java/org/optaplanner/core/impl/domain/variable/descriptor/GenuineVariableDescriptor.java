@@ -65,7 +65,7 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
     // ************************************************************************
 
     public GenuineVariableDescriptor(EntityDescriptor<Solution_> entityDescriptor,
-            MemberAccessor variableMemberAccessor) {
+                                     MemberAccessor variableMemberAccessor) {
         super(entityDescriptor, variableMemberAccessor);
     }
 
@@ -137,7 +137,7 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
     }
 
     private ValueRangeDescriptor<Solution_> buildValueRangeDescriptor(DescriptorPolicy descriptorPolicy,
-            String valueRangeProviderRef, boolean addNullInValueRange) {
+                                                                      String valueRangeProviderRef, boolean addNullInValueRange) {
         if (descriptorPolicy.hasFromSolutionValueRangeProvider(valueRangeProviderRef)) {
             MemberAccessor memberAccessor = descriptorPolicy.getFromSolutionValueRangeProvider(valueRangeProviderRef);
             return new FromSolutionPropertyValueRangeDescriptor<>(this, addNullInValueRange, memberAccessor);
@@ -157,9 +157,9 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
                     + "The valueRangeProviderRef (" + valueRangeProviderRef
                     + ") does not appear in the valueRangeProvideIds (" + providerIds
                     + ")." + (!providerIds.isEmpty() ? ""
-                            : "\nMaybe a @" + ValueRangeProvider.class.getSimpleName()
-                                    + " annotation is missing on a method in the solution class ("
-                                    + entityDescriptor.getSolutionDescriptor().getSolutionClass().getSimpleName() + ")."));
+                                      : "\nMaybe a @" + ValueRangeProvider.class.getSimpleName()
+                    + " annotation is missing on a method in the solution class ("
+                    + entityDescriptor.getSolutionDescriptor().getSolutionClass().getSimpleName() + ")."));
         }
     }
 
@@ -244,6 +244,7 @@ public class GenuineVariableDescriptor<Solution_> extends VariableDescriptor<Sol
     // ************************************************************************
 
     /**
+     * 根据返回值是否为空来判断是否已经进行了初始化.
      * A {@link PlanningVariable#nullable()} value is always considered initialized.
      *
      * @param entity never null

@@ -44,6 +44,7 @@ import org.optaplanner.core.impl.solver.termination.Termination;
 public interface Solver<Solution_> {
 
     /**
+     * 求解@PlanningSolution标注的解，并返回求解过程曾出现过的最优解.
      * Solves the planning problem and returns the best solution encountered
      * (which might or might not be optimal, feasible or even initialized).
      * <p>

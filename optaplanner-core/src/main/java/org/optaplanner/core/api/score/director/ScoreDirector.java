@@ -24,6 +24,7 @@ import org.optaplanner.core.api.solver.ProblemFactChange;
 import org.optaplanner.core.impl.heuristic.move.Move;
 
 /**
+ * 注意：这里强调 working solution, 对working solution的定义是？
  * The ScoreDirector holds the {@link PlanningSolution working solution}
  * and calculates the {@link Score} for it.
  *
@@ -70,6 +71,7 @@ public interface ScoreDirector<Solution_> {
     void afterProblemFactRemoved(Object problemFact);
 
     /**
+     * 推荐使用.
      * Translates an entity or fact instance (often from another {@link Thread} or JVM)
      * to this {@link ScoreDirector}'s internal working instance.
      * Useful for {@link Move#rebase(ScoreDirector)} and in a {@link ProblemFactChange}.
@@ -87,6 +89,7 @@ public interface ScoreDirector<Solution_> {
     <E> E lookUpWorkingObject(E externalObject);
 
     /**
+     * 推荐使用上 {@link #lookUpWorkingObject(Object)}, 因为此方法可能产生空值.
      * As defined by {@link #lookUpWorkingObject(Object)},
      * but doesn't fail fast if no workingObject was ever added for the externalObject.
      * It's recommended to use {@link #lookUpWorkingObject(Object)} instead,

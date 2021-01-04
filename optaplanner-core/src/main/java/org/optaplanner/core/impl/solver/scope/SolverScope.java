@@ -34,10 +34,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
- * SolverScope怎么理解？有点Spark的DataFrame的意思，
- *                   不同Phases阶段可以理解成计算节点，
- *                   而SolverScope则提供Phases计算问题和运行参数的加载.
- *                   而不同Phase的局部最优解则通过 org.optaplanner.core.impl.solver.scope.SolverScope#bestSolution属性保存.
+ *                    SolverScope怎么理解？有点Spark的DataFrame的意思，
+ *                    不同Phases阶段可以理解成计算节点，
+ *                    而SolverScope则提供Phases计算问题和运行参数的加载.
+ *                    而不同Phase的局部最优解则通过 org.optaplanner.core.impl.solver.scope.SolverScope#bestSolution属性保存.
+ *                    <p/>
+ *                    SolverScope运行于整个计算过程. 在多个进程间运行solverScope可能存在线同步的问题.
  */
 public class SolverScope<Solution_> {
 
