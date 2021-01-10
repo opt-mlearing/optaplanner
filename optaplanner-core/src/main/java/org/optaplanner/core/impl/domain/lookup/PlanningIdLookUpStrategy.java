@@ -25,6 +25,9 @@ import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.solution.ProblemFactCollectionProperty;
 import org.optaplanner.core.impl.domain.common.accessor.MemberAccessor;
 
+/**
+ * depend on planning id to lookUp.
+ */
 public class PlanningIdLookUpStrategy implements LookUpStrategy {
 
     private MemberAccessor planningIdMemberAccessor;

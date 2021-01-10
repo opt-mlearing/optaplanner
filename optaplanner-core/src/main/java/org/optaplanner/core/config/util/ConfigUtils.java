@@ -314,18 +314,30 @@ public class ConfigUtils {
         Class<?> clazz = baseClass;
         Stream<Member> memberStream = Stream.empty();
         while (clazz != null) {
+            // search current declared fields.
             Stream<Field> fieldStream = Stream.of(clazz.getDeclaredFields())
                     .filter(field -> field.isAnnotationPresent(annotationClass))
                     .sorted(alphabeticMemberComparator);
+            // search current declared methods.
             Stream<Method> methodStream = Stream.of(clazz.getDeclaredMethods())
                     .filter(method -> method.isAnnotationPresent(annotationClass))
                     .sorted(alphabeticMemberComparator);
+            // why not check the construct method?? hahaa
             memberStream = Stream.concat(memberStream, Stream.concat(fieldStream, methodStream));
+            // search the parent Class.
             clazz = clazz.getSuperclass();
         }
+        // return from baseClass to top parent all annotation Member.
         return memberStream.collect(Collectors.toList());
     }
 
+    /**
+     * member会包含多个annotationClasses中包含的annotation？
+     *
+     * @param member
+     * @param annotationClasses
+     * @return
+     */
     @SafeVarargs
     public static Class<? extends Annotation> extractAnnotationClass(Member member,
                                                                      Class<? extends Annotation>... annotationClasses) {
@@ -338,6 +350,7 @@ public class ConfigUtils {
                             + annotationClass.getSimpleName() + " annotation and a "
                             + detectedAnnotationClass.getSimpleName() + " annotation.");
                 }
+                // 返回annotationClasses中最后一个。
                 annotationClass = detectedAnnotationClass;
                 // Do not break early: check other annotationClasses too
             }
