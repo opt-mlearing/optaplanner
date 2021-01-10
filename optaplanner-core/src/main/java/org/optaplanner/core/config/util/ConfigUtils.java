@@ -281,8 +281,9 @@ public class ConfigUtils {
         // super class 递归.
         Class<?> superclass = bottomClass.getSuperclass();
         // 递归解析，这个过程会不会触发堆栈溢出? 原则上逻辑正确的前提下，是不会出现递归过深的问题[写出bug的就不知道啦.].
+        // java 父类只允许单继承.
         lineageClassList.addAll(getAllAnnotatedLineageClasses(superclass, annotation));
-        // interface 递归.
+        // interface 递归, 接口存在多继承，需要遍历list.
         for (Class<?> superInterface : bottomClass.getInterfaces()) {
             lineageClassList.addAll(getAllAnnotatedLineageClasses(superInterface, annotation));
         }
