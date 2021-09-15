@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -64,6 +65,7 @@ public abstract class OpenDataFilesTest<Solution_> extends LoggingTest {
         return fileList;
     }
 
+    @Disabled
     @TestFactory
     Stream<DynamicTest> readAndWriteSolution() {
         CommonApp<Solution_> commonApp = createCommonApp();

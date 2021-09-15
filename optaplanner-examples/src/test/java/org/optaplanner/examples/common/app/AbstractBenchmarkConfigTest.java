@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.optaplanner.benchmark.api.PlannerBenchmark;
@@ -34,6 +35,7 @@ public abstract class AbstractBenchmarkConfigTest {
 
     protected abstract CommonBenchmarkApp getBenchmarkApp();
 
+    @Disabled
     @TestFactory
     Stream<DynamicTest> testBenchmarkApp() {
         return getBenchmarkApp().getArgOptions().stream()

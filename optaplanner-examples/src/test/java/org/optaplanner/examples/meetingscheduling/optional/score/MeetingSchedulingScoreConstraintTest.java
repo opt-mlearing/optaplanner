@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.examples.meetingscheduling.app.MeetingSchedulingApp;
@@ -35,6 +36,7 @@ import org.optaplanner.examples.meetingscheduling.domain.Room;
 import org.optaplanner.examples.meetingscheduling.domain.TimeGrain;
 import org.optaplanner.test.impl.score.buildin.hardmediumsoft.HardMediumSoftScoreVerifier;
 
+@Disabled
 public class MeetingSchedulingScoreConstraintTest {
 
     private HardMediumSoftScoreVerifier<MeetingSchedule> scoreVerifier = new HardMediumSoftScoreVerifier<>(
@@ -97,6 +99,7 @@ public class MeetingSchedulingScoreConstraintTest {
         return solution;
     }
 
+    @Disabled
     @Test
     public void roomStability() {
         MeetingSchedule solution = getMeetingSchedule(6);

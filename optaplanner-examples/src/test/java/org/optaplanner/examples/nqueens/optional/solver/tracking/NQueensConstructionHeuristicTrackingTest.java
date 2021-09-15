@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -39,6 +40,7 @@ import org.optaplanner.examples.nqueens.persistence.NQueensGenerator;
 
 public class NQueensConstructionHeuristicTrackingTest extends NQueensAbstractTrackingTest {
 
+    @Disabled
     @ParameterizedTest(name = "ConstructionHeuristicType: {0}, EntitySorterManner: {1}, ValueSorterManner: {2}")
     @MethodSource("parameters")
     public void trackConstructionHeuristics(ConstructionHeuristicType constructionHeuristicType,

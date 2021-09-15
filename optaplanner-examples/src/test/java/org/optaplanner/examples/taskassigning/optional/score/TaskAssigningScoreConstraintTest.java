@@ -18,6 +18,7 @@ package org.optaplanner.examples.taskassigning.optional.score;
 
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
@@ -33,6 +34,7 @@ import org.optaplanner.examples.taskassigning.domain.TaskOrEmployee;
 import org.optaplanner.examples.taskassigning.domain.TaskType;
 import org.optaplanner.test.impl.score.buildin.bendable.BendableScoreVerifier;
 
+@Disabled
 public class TaskAssigningScoreConstraintTest {
 
     private static final ScoreDirectorFactoryConfig SCORE_DIRECTOR_FACTORY_CONFIG = new ScoreDirectorFactoryConfig()
@@ -42,6 +44,7 @@ public class TaskAssigningScoreConstraintTest {
     private final BendableScoreVerifier<TaskAssigningSolution> scoreVerifier =
             new BendableScoreVerifier<>(SolverFactory.create(SOLVER_CONFIG));
 
+    @Disabled
     @Test
     public void skillRequirements() {
         Skill s1 = new Skill(1L, "Law degree");

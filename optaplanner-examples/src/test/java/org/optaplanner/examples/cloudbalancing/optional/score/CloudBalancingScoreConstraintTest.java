@@ -18,6 +18,7 @@ package org.optaplanner.examples.cloudbalancing.optional.score;
 
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.examples.cloudbalancing.app.CloudBalancingApp;
@@ -26,11 +27,13 @@ import org.optaplanner.examples.cloudbalancing.domain.CloudComputer;
 import org.optaplanner.examples.cloudbalancing.domain.CloudProcess;
 import org.optaplanner.test.impl.score.buildin.hardsoft.HardSoftScoreVerifier;
 
+@Disabled
 public class CloudBalancingScoreConstraintTest {
 
     private HardSoftScoreVerifier<CloudBalance> scoreVerifier = new HardSoftScoreVerifier<>(
             SolverFactory.createFromXmlResource(CloudBalancingApp.SOLVER_CONFIG));
 
+    @Disabled
     @Test
     public void requiredCpuPowerTotal() {
         CloudComputer c1 = new CloudComputer(1L, 1000, 1, 1, 1);
@@ -55,6 +58,7 @@ public class CloudBalancingScoreConstraintTest {
         scoreVerifier.assertHardWeight("requiredCpuPowerTotal", -547, solution);
     }
 
+    @Disabled
     @Test
     public void requiredMemoryTotal() {
         CloudComputer c1 = new CloudComputer(1L, 1, 1000, 1, 1);
@@ -79,6 +83,7 @@ public class CloudBalancingScoreConstraintTest {
         scoreVerifier.assertHardWeight("requiredMemoryTotal", -547, solution);
     }
 
+    @Disabled
     @Test
     public void requiredNetworkBandwidthTotal() {
         CloudComputer c1 = new CloudComputer(1L, 1, 1, 1000, 1);
@@ -103,6 +108,7 @@ public class CloudBalancingScoreConstraintTest {
         scoreVerifier.assertHardWeight("requiredNetworkBandwidthTotal", -547, solution);
     }
 
+    @Disabled
     @Test
     public void computerCost() {
         CloudComputer c1 = new CloudComputer(1L, 1, 1, 1, 200);

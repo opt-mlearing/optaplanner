@@ -40,6 +40,7 @@ import java.util.stream.StreamSupport;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.optaplanner.core.api.domain.constraintweight.ConstraintWeight;
@@ -91,6 +92,7 @@ public class ConferenceSchedulingConstraintsXlsxTest {
     private static final HardMediumSoftScoreVerifier<ConferenceSolution> SCORE_VERIFIER =
             new HardMediumSoftScoreVerifier<>(SolverFactory.create(SOLVER_CONFIG));
 
+    @Disabled
     @ParameterizedTest(name = "{4}")
     @MethodSource("testSheetParameters")
     public void constraints(String constraintPackage, String constraintName,

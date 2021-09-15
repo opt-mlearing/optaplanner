@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 import java.io.File;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.Timeout;
@@ -52,6 +53,7 @@ public abstract class AbstractPhaseTest<Solution_, T> extends LoggingTest {
         assertThat(bestSolution).isNotNull();
     }
 
+    @Disabled
     @TestFactory
     @Timeout(600)
     Stream<DynamicContainer> runPhase() {

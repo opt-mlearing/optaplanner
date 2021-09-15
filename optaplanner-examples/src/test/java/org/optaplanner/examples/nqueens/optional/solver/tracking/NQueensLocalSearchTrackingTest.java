@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -43,6 +44,7 @@ public class NQueensLocalSearchTrackingTest extends NQueensAbstractTrackingTest 
 
     private static final int N = 6;
 
+    @Disabled
     @ParameterizedTest(name = "AcceptorType: {0}")
     @MethodSource("parameters")
     public void trackLocalSearch(LocalSearchAcceptorConfig acceptorConfig,

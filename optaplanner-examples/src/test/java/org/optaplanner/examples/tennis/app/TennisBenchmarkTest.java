@@ -18,6 +18,7 @@ package org.optaplanner.examples.tennis.app;
 
 import java.io.File;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.benchmark.api.PlannerBenchmark;
 import org.optaplanner.benchmark.api.PlannerBenchmarkFactory;
@@ -30,6 +31,7 @@ import org.optaplanner.examples.tennis.persistence.TennisGenerator;
 
 public class TennisBenchmarkTest extends LoggingTest {
 
+    @Disabled
     @Test
     public void benchmark() {
         SolverConfig solverConfig = SolverConfig.createFromXmlResource(TennisApp.SOLVER_CONFIG);

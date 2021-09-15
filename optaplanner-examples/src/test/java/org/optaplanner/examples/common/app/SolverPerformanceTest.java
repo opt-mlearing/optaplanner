@@ -26,6 +26,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -70,6 +71,7 @@ public abstract class SolverPerformanceTest<Solution_> extends LoggingTest {
         return new TestData(unsolvedDataFile, bestScoreLimit, environmentMode);
     }
 
+    @Disabled
     @TestFactory
     @Timeout(600)
     Stream<DynamicTest> runSpeedTest() {
