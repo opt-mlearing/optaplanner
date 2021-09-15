@@ -27,6 +27,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.core.api.score.buildin.simple.SimpleScore;
 import org.optaplanner.core.config.score.director.ScoreDirectorFactoryConfig;
@@ -116,6 +117,7 @@ class SolverFactoryTest {
         assertThat(solver).isNotNull();
     }
 
+    @Disabled
     @Test
     void createFromInvalidXmlResource_failsShowingBothResourceAndReason() {
         final String invalidXmlSolverConfigResource = "org/optaplanner/core/api/solver/invalidSolverConfig.xml";
@@ -125,6 +127,7 @@ class SolverFactoryTest {
                 .withStackTraceContaining("invalidElementThatShouldNotBeHere");
     }
 
+    @Disabled
     @Test
     void createFromInvalidXmlFile_failsShowingBothPathAndReason() throws IOException {
         final String invalidXmlSolverConfigResource = "org/optaplanner/core/api/solver/invalidSolverConfig.xml";

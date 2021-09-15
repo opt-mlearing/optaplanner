@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.core.impl.io.OptaPlannerXmlSerializationException;
 
@@ -67,6 +68,7 @@ class GenericJaxbIOTest {
         assertThatExceptionOfType(OptaPlannerXmlSerializationException.class).isThrownBy(() -> xmlIO.read(stringReader));
     }
 
+    @Disabled
     @Test
     void readOverridingNamespaceIsProtectedFromXXE() {
         String maliciousXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"

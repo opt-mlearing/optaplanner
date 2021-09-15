@@ -31,6 +31,7 @@ import java.time.Duration;
 import java.util.function.Consumer;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -62,6 +63,7 @@ public class SolverConfigTest {
     private static final String TEST_SOLVER_CONFIG_WITHOUT_NAMESPACE = "testSolverConfigWithoutNamespace.xml";
     private final SolverConfigIO solverConfigIO = new SolverConfigIO();
 
+    @Disabled
     @ParameterizedTest
     @ValueSource(strings = { TEST_SOLVER_CONFIG_WITHOUT_NAMESPACE, TEST_SOLVER_CONFIG_WITH_NAMESPACE })
     void xmlConfigRemainsSameAfterReadWrite(String solverConfigResource) throws IOException {
@@ -82,6 +84,7 @@ public class SolverConfigTest {
         assertThat(jaxbString).isXmlEqualTo(originalXml);
     }
 
+    @Disabled
     @Test
     void readXmlConfigWithNamespace() {
         SolverConfig solverConfig = readSolverConfig(TEST_SOLVER_CONFIG_WITH_NAMESPACE);
@@ -104,6 +107,7 @@ public class SolverConfigTest {
         }
     }
 
+    @Disabled
     @Test
     void whiteCharsInClassName() {
         String solutionClassName = "org.optaplanner.core.impl.testdata.domain.TestdataSolution";
@@ -115,6 +119,7 @@ public class SolverConfigTest {
         assertThat(solverConfig.getSolutionClass().getName()).isEqualTo(solutionClassName);
     }
 
+    @Disabled
     @Test
     void readAndValidateInvalidSolverConfig_failsIndicatingTheIssue() {
         String solverConfigXml = "<solver xmlns=\"https://www.optaplanner.org/xsd/solver\">\n"
