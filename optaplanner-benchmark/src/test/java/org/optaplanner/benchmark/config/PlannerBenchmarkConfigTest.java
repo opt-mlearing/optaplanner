@@ -28,6 +28,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -41,6 +42,7 @@ class PlannerBenchmarkConfigTest {
     private static final String TEST_PLANNER_BENCHMARK_CONFIG_WITH_NAMESPACE = "testBenchmarkConfigWithNamespace.xml";
     private static final String TEST_PLANNER_BENCHMARK_CONFIG_WITHOUT_NAMESPACE = "testBenchmarkConfigWithoutNamespace.xml";
 
+    @Disabled
     @ParameterizedTest
     @ValueSource(strings = { TEST_PLANNER_BENCHMARK_CONFIG_WITHOUT_NAMESPACE, TEST_PLANNER_BENCHMARK_CONFIG_WITH_NAMESPACE })
     void xmlConfigFileRemainsSameAfterReadWrite(String xmlBenchmarkConfigResource) throws IOException {
@@ -70,6 +72,7 @@ class PlannerBenchmarkConfigTest {
         assertThat(jaxbString).isXmlEqualTo(originalXml);
     }
 
+    @Disabled
     @Test
     void readAndValidateInvalidBenchmarkConfig_failsIndicatingTheIssue() {
         PlannerBenchmarkConfigIO xmlIO = new PlannerBenchmarkConfigIO();

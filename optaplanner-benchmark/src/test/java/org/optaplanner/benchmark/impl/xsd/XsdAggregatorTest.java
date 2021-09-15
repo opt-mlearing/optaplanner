@@ -29,6 +29,7 @@ import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.benchmark.config.PlannerBenchmarkConfig;
 import org.optaplanner.core.impl.io.jaxb.GenericJaxbIO;
@@ -38,6 +39,7 @@ class XsdAggregatorTest {
 
     private static final String VALID_BENCHMARK_CONFIG_XML = "validBenchmarkConfig.xml";
 
+    @Disabled
     @Test
     void validateByMergedXsd() throws IOException {
         // 1. Use the solver.xsd and the benchmark-with-import.xsd from the classpath.

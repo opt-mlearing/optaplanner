@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.benchmark.config.PlannerBenchmarkConfig;
 import org.optaplanner.benchmark.config.SolverBenchmarkConfig;
@@ -119,6 +120,7 @@ class PlannerBenchmarkFactoryTest {
     // Static creation methods: XML
     // ************************************************************************
 
+    @Disabled
     @Test
     void createFromXmlResource() {
         PlannerBenchmarkFactory plannerBenchmarkFactory = PlannerBenchmarkFactory.createFromXmlResource(
@@ -128,6 +130,7 @@ class PlannerBenchmarkFactoryTest {
         assertThat(plannerBenchmark.benchmark()).exists();
     }
 
+    @Disabled
     @Test
     void createFromXmlResource_classLoader() {
         // Mocking loadClass doesn't work well enough, because the className still differs from class.getName()
@@ -147,6 +150,7 @@ class PlannerBenchmarkFactoryTest {
                 .withMessageContaining(nonExistingBenchmarkConfigResource);
     }
 
+    @Disabled
     @Test
     void createFromInvalidXmlResource_failsShowingBothResourceAndReason() {
         final String invalidXmlBenchmarkConfigResource = "org/optaplanner/benchmark/api/invalidBenchmarkConfig.xml";
@@ -156,6 +160,7 @@ class PlannerBenchmarkFactoryTest {
                 .withStackTraceContaining("invalidElementThatShouldNotBeHere");
     }
 
+    @Disabled
     @Test
     void createFromInvalidXmlFile_failsShowingBothPathAndReason() throws IOException {
         final String invalidXmlBenchmarkConfigResource = "org/optaplanner/benchmark/api/invalidBenchmarkConfig.xml";
@@ -169,6 +174,7 @@ class PlannerBenchmarkFactoryTest {
                 .withStackTraceContaining("invalidElementThatShouldNotBeHere");
     }
 
+    @Disabled
     @Test
     void createFromXmlResource_uninitializedBestSolution() {
         PlannerBenchmarkConfig benchmarkConfig = PlannerBenchmarkConfig.createFromXmlResource(
@@ -182,6 +188,7 @@ class PlannerBenchmarkFactoryTest {
         assertThat(plannerBenchmark.benchmark()).exists();
     }
 
+    @Disabled
     @Test
     void createFromXmlResource_subSingleCount() {
         PlannerBenchmarkConfig benchmarkConfig = PlannerBenchmarkConfig.createFromXmlResource(
@@ -193,6 +200,7 @@ class PlannerBenchmarkFactoryTest {
         assertThat(plannerBenchmark.benchmark()).exists();
     }
 
+    @Disabled
     @Test
     void createFromXmlFile() throws IOException {
         File file = new File(benchmarkTestDir, "testdataBenchmarkConfig.xml");
@@ -206,6 +214,7 @@ class PlannerBenchmarkFactoryTest {
         assertThat(plannerBenchmark.benchmark()).exists();
     }
 
+    @Disabled
     @Test
     void createFromXmlFile_classLoader() throws IOException {
         // Mocking loadClass doesn't work well enough, because the className still differs from class.getName()
@@ -225,6 +234,7 @@ class PlannerBenchmarkFactoryTest {
     // Static creation methods: Freemarker
     // ************************************************************************
 
+    @Disabled
     @Test
     void createFromFreemarkerXmlResource() {
         PlannerBenchmarkFactory plannerBenchmarkFactory = PlannerBenchmarkFactory.createFromFreemarkerXmlResource(
@@ -234,6 +244,7 @@ class PlannerBenchmarkFactoryTest {
         assertThat(plannerBenchmark.benchmark()).exists();
     }
 
+    @Disabled
     @Test
     void createFromFreemarkerXmlResource_classLoader() {
         // Mocking loadClass doesn't work well enough, because the className still differs from class.getName()
@@ -252,6 +263,7 @@ class PlannerBenchmarkFactoryTest {
                 "org/optaplanner/benchmark/api/nonExistingBenchmarkConfigTemplate.xml.ftl"));
     }
 
+    @Disabled
     @Test
     void createFromFreemarkerXmlFile() throws IOException {
         File file = new File(benchmarkTestDir, "testdataBenchmarkConfigTemplate.xml.ftl");
@@ -265,6 +277,7 @@ class PlannerBenchmarkFactoryTest {
         assertThat(plannerBenchmark.benchmark()).exists();
     }
 
+    @Disabled
     @Test
     void createFromFreemarkerXmlFile_classLoader() throws IOException {
         // Mocking loadClass doesn't work well enough, because the className still differs from class.getName()
