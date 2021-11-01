@@ -42,6 +42,11 @@ import io.micrometer.core.instrument.Tags;
 
 /**
  * Default implementation of {@link LocalSearchPhase}.
+ * 超类AbstractPhase & 接口LocalSearchPhase中存在相同的方法.
+ * --> 如果子类中存在该方法的实现体或者说是覆盖，则使用该类的对象去调用该方法的时候，其实调用的是来自接口的实现方法，而不是来自父类的覆盖.
+ * --> 如果子类中不存在该方法的实现[或者覆盖]，则使用该类的对象去调用该方法的时候，就会使用从父类继承的方法。
+ * 同时将这个父类继承的方法接口方法的实现，也就可以不再实现接口的方法体；
+ * <p> 接口的优先级要高于父类 </p>
  *
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  */
@@ -57,7 +62,7 @@ public class DefaultLocalSearchPhase<Solution_> extends AbstractPhase<Solution_>
     protected final Map<Tags, List<AtomicReference<Number>>> constraintMatchTotalBestScoreMap = new ConcurrentHashMap<>();
 
     public DefaultLocalSearchPhase(int phaseIndex, String logIndentation,
-            BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> termination) {
+                                   BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> termination) {
         super(phaseIndex, logIndentation, bestSolutionRecaller, termination);
     }
 
@@ -103,7 +108,7 @@ public class DefaultLocalSearchPhase<Solution_> extends AbstractPhase<Solution_>
                             stepScope.getPhaseScope().calculateSolverTimeMillisSpentUpToNow());
                 } else if (stepScope.getSelectedMoveCount() == 0L) {
                     logger.warn("{}    No doable selected move at step index ({}), time spent ({})."
-                            + " Terminating phase early.",
+                                    + " Terminating phase early.",
                             logIndentation,
                             stepScope.getStepIndex(),
                             stepScope.getPhaseScope().calculateSolverTimeMillisSpentUpToNow());
@@ -159,7 +164,7 @@ public class DefaultLocalSearchPhase<Solution_> extends AbstractPhase<Solution_>
         LocalSearchPhaseScope<Solution_> phaseScope = stepScope.getPhaseScope();
         if (logger.isDebugEnabled()) {
             logger.debug("{}    LS step ({}), time spent ({}), score ({}), {} best score ({})," +
-                    " accepted/selected move count ({}/{}), picked move ({}).",
+                            " accepted/selected move count ({}/{}), picked move ({}).",
                     logIndentation,
                     stepScope.getStepIndex(),
                     phaseScope.calculateSolverTimeMillisSpentUpToNow(),
@@ -200,8 +205,8 @@ public class DefaultLocalSearchPhase<Solution_> extends AbstractPhase<Solution_>
     }
 
     private void collectConstraintMatchTotalMetrics(SolverMetric metric, Tags tags, Map<Tags, AtomicLong> countMap,
-            Map<Tags, List<AtomicReference<Number>>> scoreMap, ConstraintMatchTotal<?> constraintMatchTotal,
-            ScoreDefinition<?> scoreDefinition, SolverScope<Solution_> solverScope) {
+                                                    Map<Tags, List<AtomicReference<Number>>> scoreMap, ConstraintMatchTotal<?> constraintMatchTotal,
+                                                    ScoreDefinition<?> scoreDefinition, SolverScope<Solution_> solverScope) {
         if (solverScope.isMetricEnabled(metric)) {
             if (countMap.containsKey(tags)) {
                 countMap.get(tags).set(constraintMatchTotal.getConstraintMatchCount());
@@ -222,7 +227,7 @@ public class DefaultLocalSearchPhase<Solution_> extends AbstractPhase<Solution_>
         decider.phaseEnded(phaseScope);
         phaseScope.endingNow();
         logger.info("{}Local Search phase ({}) ended: time spent ({}), best score ({}),"
-                + " score calculation speed ({}/sec), step total ({}).",
+                        + " score calculation speed ({}/sec), step total ({}).",
                 logIndentation,
                 phaseIndex,
                 phaseScope.calculateSolverTimeMillisSpentUpToNow(),

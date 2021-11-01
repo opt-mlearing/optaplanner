@@ -36,6 +36,8 @@ import org.optaplanner.core.impl.solver.thread.ChildThreadType;
 import io.micrometer.core.instrument.Tags;
 
 /**
+ * 这个solverScope看起来像是一个 solver content上下文管理器，用于记录计算过程中产生的中间状态.
+ *
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  */
 public class SolverScope<Solution_> {

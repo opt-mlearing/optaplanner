@@ -27,6 +27,7 @@ import org.optaplanner.core.impl.solver.event.SolverEventSupport;
 import org.optaplanner.core.impl.solver.scope.SolverScope;
 
 /**
+ * 只是一个最佳解的记录器？
  * Remembers the {@link PlanningSolution best solution} that a {@link Solver} encounters.
  *
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation

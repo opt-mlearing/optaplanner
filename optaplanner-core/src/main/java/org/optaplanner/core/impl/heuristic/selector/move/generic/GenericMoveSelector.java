@@ -23,6 +23,7 @@ import org.optaplanner.core.impl.heuristic.selector.move.MoveSelector;
  * Abstract superclass for every generic {@link MoveSelector}.
  *
  * @see MoveSelector
+ * 通用移动选择器的作用是？
  */
 public abstract class GenericMoveSelector<Solution_> extends AbstractMoveSelector<Solution_> {
 

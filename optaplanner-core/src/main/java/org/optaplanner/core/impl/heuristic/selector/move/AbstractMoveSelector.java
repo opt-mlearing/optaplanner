@@ -22,6 +22,7 @@ import org.optaplanner.core.impl.heuristic.selector.AbstractSelector;
  * Abstract superclass for {@link MoveSelector}.
  *
  * @see MoveSelector
+ * 抽象选择器不仅仅需要移动选择器，还需要一个选择器.
  */
 public abstract class AbstractMoveSelector<Solution_> extends AbstractSelector<Solution_>
         implements MoveSelector<Solution_> {

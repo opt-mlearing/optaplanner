@@ -39,7 +39,9 @@ public class LocalSearchDecider<Solution_> {
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
     protected final String logIndentation;
+    /* 迭代控制器 */
     protected final Termination<Solution_> termination;
+    /*  */
     protected final MoveSelector<Solution_> moveSelector;
     protected final Acceptor<Solution_> acceptor;
     protected final LocalSearchForager<Solution_> forager;

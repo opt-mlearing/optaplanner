@@ -60,6 +60,7 @@ public interface Move<Solution_> {
      * <p>
      * It is recommended to keep this method implementation simple: do not use it in an attempt to satisfy normal
      * hard and soft constraints.
+     * 建议isMoveDoable(...)的实现类不要包含复杂的逻辑，不要在此方法内实现约束校验.
      * <p>
      * Although you could also filter out non-doable moves in for example the {@link MoveSelector}
      * or {@link MoveListFactory}, this is not needed as the {@link Solver} will do it for you.
@@ -113,7 +114,7 @@ public interface Move<Solution_> {
      * This method is thread-safe.
      *
      * @param destinationScoreDirector never null, the {@link ScoreDirector#getWorkingSolution()}
-     *        that the new move should change the planning entity instances of.
+     *                                 that the new move should change the planning entity instances of.
      * @return never null, a new move that does the same change as this move on another solution instance
      */
     default Move<Solution_> rebase(ScoreDirector<Solution_> destinationScoreDirector) {
