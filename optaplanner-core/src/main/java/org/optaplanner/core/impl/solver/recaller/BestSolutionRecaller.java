@@ -61,14 +61,16 @@ public class BestSolutionRecaller<Solution_> extends PhaseLifecycleListenerAdapt
 
     @Override
     public void solvingStarted(SolverScope<Solution_> solverScope) {
-        // Starting bestSolution is already set by Solver.solve(Solution)
+        // Starting bestSolution is already set by Solver.solve(Solution) --> 获取目标函数计算器
         InnerScoreDirector scoreDirector = solverScope.getScoreDirector();
+        /* 获取得分 */
         Score score = scoreDirector.calculateScore();
         solverScope.setBestScore(score);
         solverScope.setBestSolutionTimeMillis(System.currentTimeMillis());
         // The original bestSolution might be the final bestSolution and should have an accurate Score
         solverScope.getSolutionDescriptor().setScore(solverScope.getBestSolution(), score);
         if (score.isSolutionInitialized()) {
+            /* 只有已经初始化的solution才可以设置得分 */
             solverScope.setStartingInitializedScore(score);
         } else {
             solverScope.setStartingInitializedScore(null);

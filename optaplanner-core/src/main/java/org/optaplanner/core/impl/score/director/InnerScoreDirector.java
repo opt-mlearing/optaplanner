@@ -43,6 +43,13 @@ import org.optaplanner.core.impl.solver.thread.ChildThreadType;
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  * @param <Score_> the score type to go with the solution
  */
+
+/**
+ * AutoCloseable jdk 1.7 以后引入，可知该接口的出现是为了更好的管理资源（释放资源），当一个资源类实现了该接口close 方法，
+ * 在使用 try-catch-resources 语法创建的资源抛出异常后，JVM会自动调用close方法进行资源释放，当没有抛出异常正常退出try-block
+ * 时候也会调用close方法。类似数据的链接类Connection、IO类InputStream或OutputStream都直接或者间接实现了该接口。
+ * <p></p>
+ */
 public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
         extends ScoreDirector<Solution_>, AutoCloseable {
 
@@ -75,7 +82,7 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
      * unless that method has already been called since the last {@link PlanningVariable} changes.
      *
      * @return never null, the key is the {@link ConstraintMatchTotal#getConstraintId() constraintId}
-     *         (to create one, use {@link ConstraintMatchTotal#composeConstraintId(String, String)}).
+     * (to create one, use {@link ConstraintMatchTotal#composeConstraintId(String, String)}).
      * @throws IllegalStateException if {@link #isConstraintMatchEnabled()} returns false
      * @see #getIndictmentMap()
      */
@@ -95,7 +102,7 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
      * unless that method has already been called since the last {@link PlanningVariable} changes.
      *
      * @return never null, the key is a {@link ProblemFactCollectionProperty problem fact} or a
-     *         {@link PlanningEntity planning entity}
+     * {@link PlanningEntity planning entity}
      * @throws IllegalStateException if {@link #isConstraintMatchEnabled()} returns false
      * @see #getConstraintMatchTotalMap()
      */
@@ -103,7 +110,7 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
 
     /**
      * @param constraintMatchEnabledPreference false if a {@link ScoreDirector} implementation
-     *        should not do {@link ConstraintMatch} tracking even if it supports it.
+     *                                         should not do {@link ConstraintMatch} tracking even if it supports it.
      */
     void overwriteConstraintMatchEnabledPreference(boolean constraintMatchEnabledPreference);
 
@@ -113,16 +120,16 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
     long getWorkingEntityListRevision();
 
     /**
-     * @param move never null
+     * @param move                       never null
      * @param assertMoveScoreFromScratch true will hurt performance
      * @return never null
      */
     Score_ doAndProcessMove(Move<Solution_> move, boolean assertMoveScoreFromScratch);
 
     /**
-     * @param move never null
+     * @param move                       never null
      * @param assertMoveScoreFromScratch true will hurt performance
-     * @param moveProcessor never null, use this to store the score as well as call the acceptor and forager
+     * @param moveProcessor              never null, use this to store the score as well as call the acceptor and forager
      */
     void doAndProcessMove(Move<Solution_> move, boolean assertMoveScoreFromScratch, Consumer<Score_> moveProcessor);
 
@@ -219,8 +226,8 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
      * Used to assert that skipping {@link #calculateScore()} (when the score is otherwise determined) is correct.
      *
      * @param expectedWorkingScore never null
-     * @param completedAction sometimes null, when assertion fails then the completedAction's {@link Object#toString()}
-     *        is included in the exception message
+     * @param completedAction      sometimes null, when assertion fails then the completedAction's {@link Object#toString()}
+     *                             is included in the exception message
      */
     void assertExpectedWorkingScore(Score_ expectedWorkingScore, Object completedAction);
 
@@ -234,8 +241,8 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
      * Used to assert that the shadow variables' state is consistent with the genuine variables' state.
      *
      * @param expectedWorkingScore never null
-     * @param completedAction sometimes null, when assertion fails then the completedAction's {@link Object#toString()}
-     *        is included in the exception message
+     * @param completedAction      sometimes null, when assertion fails then the completedAction's {@link Object#toString()}
+     *                             is included in the exception message
      */
     void assertShadowVariablesAreNotStale(Score_ expectedWorkingScore, Object completedAction);
 
@@ -246,9 +253,9 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
      * <p>
      * Furthermore, if the assert fails, a score corruption analysis might be included in the exception message.
      *
-     * @param workingScore never null
+     * @param workingScore    never null
      * @param completedAction sometimes null, when assertion fails then the completedAction's {@link Object#toString()}
-     *        is included in the exception message
+     *                        is included in the exception message
      * @see InnerScoreDirectorFactory#assertScoreFromScratch
      */
     void assertWorkingScoreFromScratch(Score_ workingScore, Object completedAction);
@@ -260,9 +267,9 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
      * <p>
      * Furthermore, if the assert fails, a score corruption analysis might be included in the exception message.
      *
-     * @param predictedScore never null
+     * @param predictedScore  never null
      * @param completedAction sometimes null, when assertion fails then the completedAction's {@link Object#toString()}
-     *        is included in the exception message
+     *                        is included in the exception message
      * @see InnerScoreDirectorFactory#assertScoreFromScratch
      */
     void assertPredictedScoreFromScratch(Score_ predictedScore, Object completedAction);
@@ -274,7 +281,7 @@ public interface InnerScoreDirector<Solution_, Score_ extends Score<Score_>>
      * <p>
      * Furthermore, if the assert fails, a score corruption analysis might be included in the exception message.
      *
-     * @param move never null
+     * @param move            never null
      * @param beforeMoveScore never null
      */
     void assertExpectedUndoMoveScore(Move<Solution_> move, Score_ beforeMoveScore);
