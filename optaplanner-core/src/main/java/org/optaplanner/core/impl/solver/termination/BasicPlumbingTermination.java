@@ -35,6 +35,7 @@ public class BasicPlumbingTermination<Solution_> extends AbstractTermination<Sol
     protected final boolean daemon;
 
     protected boolean terminatedEarly = false;
+    /* LinkedBlockingQueue内部存储结构类似LinkedList，内部基于链表来存放元素 */
     protected BlockingQueue<ProblemFactChange<Solution_>> problemFactChangeQueue = new LinkedBlockingQueue<>();
 
     protected boolean problemFactChangesBeingProcessed = false;

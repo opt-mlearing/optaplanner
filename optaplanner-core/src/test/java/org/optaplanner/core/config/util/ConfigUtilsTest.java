@@ -27,10 +27,14 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
 public class ConfigUtilsTest {
 
@@ -84,7 +88,8 @@ public class ConfigUtilsTest {
 
     @Test
     public void ceilDivideByZero() {
-        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(() -> ConfigUtils.ceilDivide(20, -0));
+        assertThatExceptionOfType(ArithmeticException.class).isThrownBy(
+                () -> ConfigUtils.ceilDivide(20, -0));
     }
 
     @Test
@@ -104,7 +109,8 @@ public class ConfigUtilsTest {
         customProperties.put("string", "This is a sentence.");
         customProperties.put("configUtilsTestBeanEnum", "BETA");
         ConfigUtilsTestBean bean = new ConfigUtilsTestBean();
-        ConfigUtils.applyCustomProperties(bean, "bean", customProperties, "customProperties");
+        ConfigUtils.applyCustomProperties(
+                bean, "bean", customProperties, "customProperties");
         assertThat(bean.primitiveBoolean).isTrue();
         assertThat(bean.objectBoolean).isEqualTo(Boolean.TRUE);
         assertThat(bean.primitiveInt).isEqualTo(1);
@@ -125,7 +131,8 @@ public class ConfigUtilsTest {
         Map<String, String> customProperties = new HashMap<>();
         customProperties.put("string", "This is a sentence.");
         ConfigUtilsTestBean bean = new ConfigUtilsTestBean();
-        ConfigUtils.applyCustomProperties(bean, "bean", customProperties, "customProperties");
+        ConfigUtils.applyCustomProperties(
+                bean, "bean", customProperties, "customProperties");
         assertThat(bean.string).isEqualTo("This is a sentence.");
     }
 
@@ -134,8 +141,8 @@ public class ConfigUtilsTest {
         Map<String, String> customProperties = new HashMap<>();
         customProperties.put("doesNotExist", "This is a sentence.");
         ConfigUtilsTestBean bean = new ConfigUtilsTestBean();
-        assertThatIllegalStateException().isThrownBy(
-                () -> ConfigUtils.applyCustomProperties(bean, "bean", customProperties, "customProperties"));
+        assertThatIllegalStateException().isThrownBy(() -> ConfigUtils.applyCustomProperties(
+                bean, "bean", customProperties, "customProperties"));
     }
 
     private static class ConfigUtilsTestBean {
@@ -216,7 +223,8 @@ public class ConfigUtilsTest {
 
     @Test
     public void newInstanceStaticInnerClass() {
-        assertThat(ConfigUtils.newInstance(this, "testProperty", StaticInnerClass.class)).isNotNull();
+        assertThat(ConfigUtils.newInstance(
+                this, "testProperty", StaticInnerClass.class)).isNotNull();
     }
 
     public static class StaticInnerClass {
@@ -239,8 +247,8 @@ public class ConfigUtilsTest {
 
     @Test
     public void newInstanceNonStaticInnerClass() {
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> ConfigUtils.newInstance(this, "testProperty", NonStaticInnerClass.class))
+        assertThatIllegalArgumentException().isThrownBy(() -> ConfigUtils.newInstance(
+                        this, "testProperty", NonStaticInnerClass.class))
                 .withMessageContaining("inner class");
     }
 
@@ -252,7 +260,8 @@ public class ConfigUtilsTest {
         class LocalClass {
         }
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> ConfigUtils.newInstance(this, "testProperty", LocalClass.class))
+                .isThrownBy(() ->
+                        ConfigUtils.newInstance(this, "testProperty", LocalClass.class))
                 .withMessageContaining("inner class");
     }
 
@@ -279,18 +288,23 @@ public class ConfigUtilsTest {
 
     @Test
     void ignoreSyntheticMembers() {
-        assertThat(ConfigUtils.getDeclaredMembers(ClassWithSyntheticFieldParent.ClassWithSyntheticField.class)).hasSize(1);
-        assertThat(ConfigUtils.getDeclaredMembers(ClassWithSyntheticFieldParent.ClassWithSyntheticField.class))
+        assertThat(ConfigUtils.getDeclaredMembers(
+                ClassWithSyntheticFieldParent.ClassWithSyntheticField.class)).hasSize(1);
+        assertThat(ConfigUtils.getDeclaredMembers(
+                ClassWithSyntheticFieldParent.ClassWithSyntheticField.class))
                 .noneMatch(Member::isSynthetic);
-        assertThat(ConfigUtils.getAllMembers(ClassWithSyntheticFieldParent.ClassWithSyntheticField.class, PlanningScore.class))
+        assertThat(ConfigUtils.getAllMembers(
+                ClassWithSyntheticFieldParent.ClassWithSyntheticField.class, PlanningScore.class))
                 .hasSize(1);
-        assertThat(ConfigUtils.getAllMembers(ClassWithSyntheticFieldParent.ClassWithSyntheticField.class, PlanningScore.class))
+        assertThat(ConfigUtils.getAllMembers(
+                ClassWithSyntheticFieldParent.ClassWithSyntheticField.class, PlanningScore.class))
                 .noneMatch(Member::isSynthetic);
 
         assertThat(ConfigUtils.getDeclaredMembers(ClassWithBridgeMethod.class)).hasSize(2);
         assertThat(ConfigUtils.getDeclaredMembers(ClassWithBridgeMethod.class)).noneMatch(Member::isSynthetic);
         assertThat(ConfigUtils.getAllMembers(ClassWithBridgeMethod.class, PlanningScore.class)).hasSize(1);
-        assertThat(ConfigUtils.getAllMembers(ClassWithBridgeMethod.class, PlanningScore.class)).noneMatch(Member::isSynthetic);
+        assertThat(ConfigUtils.getAllMembers(ClassWithBridgeMethod.class, PlanningScore.class))
+                .noneMatch(Member::isSynthetic);
     }
 
     public static class ClassWithSyntheticFieldParent {
@@ -320,6 +334,31 @@ public class ConfigUtilsTest {
         @PlanningScore
         public void setScore(Integer score) {
         }
+    }
+
+    @Test
+    public void testAnnotationClass() {
+        /* super class annotation by PlanningSolution */
+        /* ConfigUtils.getAllAnnotationLineageClasses 该接口可遍历获取当前类、当前类的父接口、当前类的父类对应的特定注解信息 */
+        List<Class<?>> superClassList =
+                ConfigUtils.getAllAnnotatedLineageClasses(InnerSuperProblem.class, PlanningSolution.class);
+        Assertions.assertTrue(Objects.nonNull(superClassList));
+        Assertions.assertEquals(1, superClassList.size());
+        Class<?> innerProblemClass = superClassList.get(0);
+        Assertions.assertEquals(InnerSuperProblem.class.getSimpleName(), innerProblemClass.getSimpleName());
+        /* extend class annotation by PlanningSolution */
+        List<Class<?>> classList =
+                ConfigUtils.getAllAnnotatedLineageClasses(InnerProblem.class, PlanningSolution.class);
+        Assertions.assertTrue(Objects.nonNull(classList));
+        Assertions.assertEquals(2, classList.size());
+    }
+
+    @PlanningSolution
+    static class InnerProblem extends InnerSuperProblem {
+    }
+
+    @PlanningSolution
+    static class InnerSuperProblem {
     }
 
 }

@@ -73,9 +73,9 @@ public class DefaultSolver<Solution_> extends AbstractSolver<Solution_> {
     // ************************************************************************
 
     public DefaultSolver(EnvironmentMode environmentMode, RandomFactory randomFactory,
-            BestSolutionRecaller<Solution_> bestSolutionRecaller,
-            BasicPlumbingTermination<Solution_> basicPlumbingTermination, Termination<Solution_> termination,
-            List<Phase<Solution_>> phaseList, SolverScope<Solution_> solverScope, String moveThreadCountDescription) {
+                         BestSolutionRecaller<Solution_> bestSolutionRecaller,
+                         BasicPlumbingTermination<Solution_> basicPlumbingTermination, Termination<Solution_> termination,
+                         List<Phase<Solution_>> phaseList, SolverScope<Solution_> solverScope, String moveThreadCountDescription) {
         super(bestSolutionRecaller, termination, phaseList);
         this.environmentMode = environmentMode;
         this.randomFactory = randomFactory;
@@ -163,7 +163,7 @@ public class DefaultSolver<Solution_> extends AbstractSolver<Solution_> {
     }
 
     public void setMonitorTagMap(Map<String, String> monitorTagMap) {
-        monitoringTags = ObjectUtils.defaultIfNull(monitorTagMap, Collections.<String, String> emptyMap())
+        monitoringTags = ObjectUtils.defaultIfNull(monitorTagMap, Collections.<String, String>emptyMap())
                 .entrySet().stream().map(entry -> Tags.of(entry.getKey(), entry.getValue()))
                 .reduce(Tags.empty(), Tags::and);
         solverScope.setMonitoringTags(monitoringTags);
@@ -216,22 +216,28 @@ public class DefaultSolver<Solution_> extends AbstractSolver<Solution_> {
         return solverScope.getBestSolution();
     }
 
+    /* 看起来都是重置求解器的环境变量 */
     public void outerSolvingStarted(SolverScope<Solution_> solverScope) {
+        /* 求解器运行状态 */
         solving.set(true);
+        /* 求解器提前终止开关 */
         basicPlumbingTermination.resetTerminateEarly();
         solverScope.setStartingSolverCount(0);
+        /* 重置随机工厂 */
         solverScope.setWorkingRandom(randomFactory.createRandom());
     }
 
     @Override
     public void solvingStarted(SolverScope<Solution_> solverScope) {
+        /* 重置solver运行时间相关的计数器 */
         solverScope.startingNow();
         solverScope.getScoreDirector().resetCalculationCount();
+        /* 调用父类的模板方法，其实这里的写法可参考 spring getBean && doGetBean 的方式，层次更加清晰. */
         super.solvingStarted(solverScope);
         int startingSolverCount = solverScope.getStartingSolverCount() + 1;
         solverScope.setStartingSolverCount(startingSolverCount);
         logger.info("Solving {}: time spent ({}), best score ({}), environment mode ({}), "
-                + "move thread count ({}), random ({}).",
+                        + "move thread count ({}), random ({}).",
                 (startingSolverCount == 1 ? "started" : "restarted"),
                 solverScope.calculateTimeMillisSpentUpToNow(),
                 solverScope.getBestScore(),
@@ -250,7 +256,7 @@ public class DefaultSolver<Solution_> extends AbstractSolver<Solution_> {
         // Must be kept open for doProblemFactChange
         solverScope.getScoreDirector().close();
         logger.info("Solving ended: time spent ({}), best score ({}), score calculation speed ({}/sec), "
-                + "phase total ({}), environment mode ({}), move thread count ({}).",
+                        + "phase total ({}), environment mode ({}), move thread count ({}).",
                 solverScope.getTimeMillisSpent(),
                 solverScope.getBestScore(),
                 solverScope.getScoreCalculationSpeed(),

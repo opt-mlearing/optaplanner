@@ -29,20 +29,25 @@ import org.optaplanner.core.api.solver.Solver;
  *
  * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  */
+/* optaplanner-core 源生实现的 EventObject 暂时只有这一个，用于记录优解的相关信息，这里不区分局部或者全局最优解的概念. */
 public class BestSolutionChangedEvent<Solution_> extends EventObject {
 
+    /* 求解器实例 */
     private final Solver<Solution_> solver;
+    /* 计算耗时 */
     private final long timeMillisSpent;
+    /* 解 */
     private final Solution_ newBestSolution;
+    /* 解的评价值 */
     private final Score newBestScore;
 
     /**
-     * @param solver never null
+     * @param solver          never null
      * @param timeMillisSpent {@code >= 0L}
      * @param newBestSolution never null
      */
     public BestSolutionChangedEvent(Solver<Solution_> solver, long timeMillisSpent,
-            Solution_ newBestSolution, Score newBestScore) {
+                                    Solution_ newBestSolution, Score newBestScore) {
         super(solver);
         this.solver = solver;
         this.timeMillisSpent = timeMillisSpent;
@@ -52,7 +57,7 @@ public class BestSolutionChangedEvent<Solution_> extends EventObject {
 
     /**
      * @return {@code >= 0}, the amount of millis spent since the {@link Solver} started
-     *         until {@link #getNewBestSolution()} was found
+     * until {@link #getNewBestSolution()} was found
      */
     public long getTimeMillisSpent() {
         return timeMillisSpent;

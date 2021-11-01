@@ -29,13 +29,14 @@ import org.optaplanner.core.impl.solver.termination.Termination;
 /**
  * A Solver solves a planning problem and returns the best solution found.
  * It's recommended to create a new Solver instance for each dataset.
+ * 建议针对每个求解问题，创建一个新的求解器实例.
  * <p>
  * To create a Solver, use {@link SolverFactory#buildSolver()}.
  * To solve a planning problem, call {@link #solve(Object)}.
  * To solve a planning problem without blocking the current thread, use {@link SolverManager} instead.
  * <p>
- * These methods are not thread-safe and should be called from the same thread,
- * except for the methods that are explicitly marked as thread-safe.
+ * These methods are not thread-safe 非数据安全 and should be called from the same thread,
+ * except for the methods that are explicitly marked as thread-safe 需要进行线程安全隔离.
  * Note that despite that {@link #solve} is not thread-safe for clients of this class,
  * that method is free to do multithreading inside itself.
  *
@@ -71,6 +72,7 @@ public interface Solver<Solution_> {
      * @return true if successful, false if was already terminating or terminated
      * @see #isTerminateEarly()
      * @see Future#cancel(boolean)
+     * 提前终止，注意这里的提前终止是一个异步过程.
      */
     boolean terminateEarly();
 
@@ -124,7 +126,7 @@ public interface Solver<Solution_> {
     /**
      * Checks if all scheduled {@link ProblemFactChange}s have been processed.
      * <p>
-     * This method is thread-safe.
+     * This method is thread-safe. <--  线程安全的
      *
      * @return true if there are no {@link ProblemFactChange}s left to do
      */

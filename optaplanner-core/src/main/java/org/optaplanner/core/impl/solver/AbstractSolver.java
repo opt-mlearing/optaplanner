@@ -62,7 +62,7 @@ public abstract class AbstractSolver<Solution_> implements Solver<Solution_> {
     // ************************************************************************
 
     public AbstractSolver(BestSolutionRecaller<Solution_> bestSolutionRecaller, Termination<Solution_> termination,
-            List<Phase<Solution_>> phaseList) {
+                          List<Phase<Solution_>> phaseList) {
         this.bestSolutionRecaller = bestSolutionRecaller;
         this.termination = termination;
         bestSolutionRecaller.setSolverEventSupport(solverEventSupport);
@@ -77,6 +77,7 @@ public abstract class AbstractSolver<Solution_> implements Solver<Solution_> {
     // ************************************************************************
 
     public void solvingStarted(SolverScope<Solution_> solverScope) {
+        /* 设置 workingSolution */
         solverScope.setWorkingSolutionFromBestSolution();
         bestSolutionRecaller.solvingStarted(solverScope);
         termination.solvingStarted(solverScope);

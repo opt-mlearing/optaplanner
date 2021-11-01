@@ -23,18 +23,33 @@ import org.optaplanner.core.impl.solver.scope.SolverScope;
 
 /**
  * Internal API.
+ * 算法阶段监听.
  */
 public class PhaseLifecycleSupport<Solution_> extends AbstractEventSupport<PhaseLifecycleListener<Solution_>> {
 
+    /* 作用求解开始 */
     public void fireSolvingStarted(SolverScope<Solution_> solverScope) {
         for (PhaseLifecycleListener<Solution_> phaseLifecycleListener : eventListenerSet) {
             phaseLifecycleListener.solvingStarted(solverScope);
         }
     }
 
+    /* 作用求解结束 */
+    public void fireSolvingEnded(SolverScope<Solution_> solverScope) {
+        for (PhaseLifecycleListener<Solution_> phaseLifecycleListener : eventListenerSet) {
+            phaseLifecycleListener.solvingEnded(solverScope);
+        }
+    }
+
     public void firePhaseStarted(AbstractPhaseScope<Solution_> phaseScope) {
         for (PhaseLifecycleListener<Solution_> phaseLifecycleListener : eventListenerSet) {
             phaseLifecycleListener.phaseStarted(phaseScope);
+        }
+    }
+
+    public void firePhaseEnded(AbstractPhaseScope<Solution_> phaseScope) {
+        for (PhaseLifecycleListener<Solution_> phaseLifecycleListener : eventListenerSet) {
+            phaseLifecycleListener.phaseEnded(phaseScope);
         }
     }
 
@@ -47,18 +62,6 @@ public class PhaseLifecycleSupport<Solution_> extends AbstractEventSupport<Phase
     public void fireStepEnded(AbstractStepScope<Solution_> stepScope) {
         for (PhaseLifecycleListener<Solution_> phaseLifecycleListener : eventListenerSet) {
             phaseLifecycleListener.stepEnded(stepScope);
-        }
-    }
-
-    public void firePhaseEnded(AbstractPhaseScope<Solution_> phaseScope) {
-        for (PhaseLifecycleListener<Solution_> phaseLifecycleListener : eventListenerSet) {
-            phaseLifecycleListener.phaseEnded(phaseScope);
-        }
-    }
-
-    public void fireSolvingEnded(SolverScope<Solution_> solverScope) {
-        for (PhaseLifecycleListener<Solution_> phaseLifecycleListener : eventListenerSet) {
-            phaseLifecycleListener.solvingEnded(solverScope);
         }
     }
 
